@@ -84,7 +84,13 @@ public class RolServiceImpl  implements RolService {
 		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
 		UsuarioDto usuarioDto = gson.fromJson((String) authentication.getPrincipal(), UsuarioDto.class);
 
-		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
+		RolRequest rolRequest = new RolRequest();
+		try {
+			rolRequest = gson.fromJson(datosJson, RolRequest.class);
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Json incorrecto o mal formado");
+		}
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveAlta(usuarioDto.getCorreo());
 		//rol.setClaveModifica(usuarioDto.getCorreo());
