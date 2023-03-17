@@ -59,6 +59,14 @@ public class ValidacionErrores {
 		this.error = error;
 	}
 
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
 	public ValidacionErrores(Map<String, String> errores, Date fecha) {
 		super();
 		this.errores = errores;

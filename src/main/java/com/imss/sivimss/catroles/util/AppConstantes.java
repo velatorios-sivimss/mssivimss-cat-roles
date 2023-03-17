@@ -31,6 +31,18 @@ public class AppConstantes {
 	public static final String ILLEGALARGUMENTEXCEPTION_MENSAJE  = "Token vacío.";
 	public static final String SIGNATUREEXCEPTION_MENSAJE  = "Fallo la firma.";
 	public static final String FORBIDDENEXCEPTION_MENSAJE  = "No tiene autorización para realizar la solicitud.";
+	
+	public static final String ID_USUARIO_MODIFICA = "ID_USUARIO_MODIFICA";
+	public static final String FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
+	public static final String ID_USUARIO_BAJA = "ID_USUARIO_BAJA";
+	public static final String UPDATE_SVC_ROL = "UPDATE SVC_ROL";
+	public static final String CVE_ESTATUS = "CVE_ESTATUS";
+	public static final String FEC_BAJA = "FEC_BAJA";
+	public static final String DES_ROL = "DES_ROL";
+	public static final String ID_ROL = "ID_ROL = ";
+	public static final String NOW = "NOW()";
+	public static final String NULL = "NULL";
+	
 
 	private AppConstantes() {
 	    throw new IllegalStateException("AppConstantes class");

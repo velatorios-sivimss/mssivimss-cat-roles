@@ -14,7 +14,6 @@ import com.imss.sivimss.catroles.util.AppConstantes;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,7 +36,6 @@ public class JwtTokenProvider {
 	public String createToken(String subject) {
 		Map<String, Object> claims = Jwts.claims().setSubject(subject);
 		Date now = new Date();
-		// Date exp = new Date(now.getTime() + 3600 * 1000);
 		Date exp = new Date(now.getTime() + Long.parseLong(expiration) * 1000);
 		return Jwts.builder().setHeaderParam("sistema", "sivimss").setClaims(claims).setIssuedAt(now).setExpiration(exp)
 				.signWith(SignatureAlgorithm.HS512, jwtSecretDominios).compact();
@@ -58,7 +56,7 @@ public class JwtTokenProvider {
 	public boolean validateToken(String authToken, HttpServletRequest request) {
 		try {
 			// Jwt token has not been tampered with
-			Jws<Claims> claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
 			return true;
 		} catch (MalformedJwtException e) {
 			request.setAttribute(AppConstantes.STATUSEXCEPTION, AppConstantes.MALFORMEDJWTEXCEPTION);

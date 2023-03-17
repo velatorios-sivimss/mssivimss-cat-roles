@@ -1,1 +1,0 @@
-package com.imss.sivimss.catroles.config;

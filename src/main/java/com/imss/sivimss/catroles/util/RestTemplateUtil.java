@@ -23,7 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RestTemplateUtil {
 
-    private final RestTemplate restTemplate;
+    private static final String HA_OCURRIDO_UN_ERROR_AL_ENVIAR = "Ha ocurrido un error al enviar";
+
+	private static final String FALLO_AL_CONSUMIR_EL_SERVICIO = "Fallo al consumir el servicio, {}";
+    
+	private final RestTemplate restTemplate;
 
     public RestTemplateUtil(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -54,12 +58,12 @@ public class RestTemplateUtil {
                 //noinspection unchecked
                 responseBody = (Response<List<String>>) responseEntity.getBody();
             } else {
-                throw new IOException("Ha ocurrido un error al enviar");
+                throw new IOException(HA_OCURRIDO_UN_ERROR_AL_ENVIAR);
             }
         } catch (IOException ioException) {
             throw ioException;
         } catch (Exception e) {
-            log.error("Fallo al consumir el servicio, {}", e.getMessage());
+            log.error(FALLO_AL_CONSUMIR_EL_SERVICIO, e.getMessage());
             responseBody.setCodigo(HttpStatus.INTERNAL_SERVER_ERROR.value());
             responseBody.setError(true);
             responseBody.setMensaje(e.getMessage());
@@ -93,12 +97,12 @@ public class RestTemplateUtil {
     			//noinspection unchecked
     			responseBody = (Response<List<String>>) responseEntity.getBody();
     		} else {
-    			throw new IOException("Ha ocurrido un error al enviar");
+    			throw new IOException(HA_OCURRIDO_UN_ERROR_AL_ENVIAR);
     		}
     	} catch (IOException ioException) {
     		throw ioException;
     	} catch (Exception e) {
-    		log.error("Fallo al consumir el servicio, {}", e.getMessage());
+    		log.error(FALLO_AL_CONSUMIR_EL_SERVICIO, e.getMessage());
     		responseBody.setCodigo(HttpStatus.INTERNAL_SERVER_ERROR.value());
     		responseBody.setError(true);
     		responseBody.setMensaje(e.getMessage());
@@ -123,7 +127,6 @@ public class RestTemplateUtil {
     
     /**
      * Crea los headers para la petici&oacute;n con token
-     * todo - falta agregar el tema de seguridad para las peticiones
      *
      * @return
      */
@@ -139,7 +142,6 @@ public class RestTemplateUtil {
     /////////////////////////////////////////////////////peticion con archivos
     /**
      * Crea los headers para la petici&oacute;n con token
-     * todo - falta agregar el tema de seguridad para las peticiones
      *
      * @return
      */
@@ -175,12 +177,12 @@ public class RestTemplateUtil {
     			//noinspection unchecked
     			responseBody = (Response<List<String>>) responseEntity.getBody();
     		} else {
-    			throw new IOException("Ha ocurrido un error al enviar");
+    			throw new IOException(HA_OCURRIDO_UN_ERROR_AL_ENVIAR);
     		}
     	} catch (IOException ioException) {
     		throw ioException;
     	} catch (Exception e) {
-    		log.error("Fallo al consumir el servicio, {}", e.getMessage());
+    		log.error(FALLO_AL_CONSUMIR_EL_SERVICIO, e.getMessage());
     		responseBody.setCodigo(HttpStatus.INTERNAL_SERVER_ERROR.value());
     		responseBody.setError(true);
     		responseBody.setMensaje(e.getMessage());

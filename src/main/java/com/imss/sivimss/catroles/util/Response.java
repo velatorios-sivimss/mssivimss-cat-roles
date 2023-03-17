@@ -24,7 +24,7 @@ public class Response<T> implements Serializable {
 	
 	private String mensaje;
 	
-	private T datos;
+	private  transient T  datos;
 	
 	public Response() {
 		

@@ -13,15 +13,16 @@ public interface RolService {
 
 	Response<?> catalogoRol(DatosRequest request, Authentication authentication)  throws IOException;
 
-	Response<?> buscarRol(DatosRequest request, Authentication authentication) throws IOException;
+	Response<?> buscarFiltrosRol(DatosRequest request, Authentication authentication) throws IOException;
 
 	Response<?> detalleRol(DatosRequest request, Authentication authentication) throws IOException;
 
 	Response<?> agregarRol(DatosRequest request, Authentication authentication)throws IOException;
 
 	Response<?> actualizarRol(DatosRequest request, Authentication authentication)throws IOException;
+	
+	Response<?> activarRol(DatosRequest request, Authentication authentication)throws IOException;
 
-	Response<?> cambiarEstatusRol(DatosRequest request, Authentication authentication)throws IOException;
+	Response<?> borrarRol(DatosRequest request, Authentication authentication)throws IOException;
 	
 }
-
