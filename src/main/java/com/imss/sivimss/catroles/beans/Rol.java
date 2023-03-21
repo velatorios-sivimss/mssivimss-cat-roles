@@ -33,14 +33,14 @@ public class Rol {
 	private String claveBaja;
 	
 	private static final String CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP()";
-	public static final String ID_USUARIO_MODIFICA = "ID_USUARIO_MODIFICA";
-	public static final String FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
-	public static final String ID_USUARIO_BAJA = "ID_USUARIO_BAJA";
-	public static final String UPDATE_SVC_ROL = "UPDATE SVC_ROL";
-	public static final String CVE_ESTATUS = "CVE_ESTATUS";
-	public static final String FEC_BAJA = "FEC_BAJA";
-	public static final String DES_ROL = "DES_ROL";
-	public static final String ID_ROL = "ID_ROL = ";
+	private static final String ID_USUARIO_MODIFICA = "ID_USUARIO_MODIFICA";
+	private static final String FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
+	private static final String ID_USUARIO_BAJA = "ID_USUARIO_BAJA";
+	private static final String UPDATE_SVC_ROL = "UPDATE SVC_ROL";
+	private static final String CVE_ESTATUS = "CVE_ESTATUS";
+	private static final String FEC_BAJA = "FEC_BAJA";
+	private static final String DES_ROL = "DES_ROL";
+	private static final String ID_ROL = "ID_ROL = ";
 	private static final String NULL = "NULL";
 
 
