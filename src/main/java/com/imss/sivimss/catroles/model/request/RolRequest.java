@@ -14,12 +14,10 @@ import lombok.Setter;
 @Getter
 @JsonIgnoreType(value = true)
 public class RolRequest {
-	private Integer id;
-	private String des_rol;
-	private String estatus;
+	private Integer idRol;
+	private String desRol;
+	private Integer estatusRol;
 	private Integer nivel;
-	private Integer velatorio;
 	private String claveAlta;
-	
 	
 }

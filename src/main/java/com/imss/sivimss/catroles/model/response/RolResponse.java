@@ -26,31 +26,28 @@ public class RolResponse {
 	private String DES_ROL;
 	
 	@JsonProperty(value = "estatus")
-	private String ESTATUS;
+	private String CVE_ESTATUS;
 	
 	@JsonProperty(value = "nivel")
 	private Integer ID_OFICINA;
 	
-	@JsonProperty(value = "velatorio")
-	private Integer ID_VELATORIO;
-	
 	@JsonProperty(value = "fCreacion")
 	private String FEC_ALTA;
 	
-	@JsonProperty(value = "claveAlta")
-	private String CVE_MATRICULA_ALTA;
+	@JsonProperty(value = "usuarioAlta")
+	private String ID_USUARIO_ALTA;
 	
 	@JsonProperty(value = "fActualizacion")
 	private String FEC_ACTUALIZACION;
 	
-	@JsonProperty(value = "claveModifica")
-	private String CVE_MATRICULA_MODIFICA;
+	@JsonProperty(value = "usuarioModifica")
+	private String ID_USUARIO_MODIFICA;
 	
 	@JsonProperty(value = "fBaja")
 	private String FEC_BAJA;
 	
-	@JsonProperty(value = "claveBaja")
-	private String CVE_MATRICULA_BAJA;
+	@JsonProperty(value = "usuarioBaja")
+	private String ID_USUARIO_BAJA;
 	
 	
 }

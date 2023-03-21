@@ -31,7 +31,7 @@ public class AppConstantes {
 	public static final String ILLEGALARGUMENTEXCEPTION_MENSAJE  = "Token vacío.";
 	public static final String SIGNATUREEXCEPTION_MENSAJE  = "Fallo la firma.";
 	public static final String FORBIDDENEXCEPTION_MENSAJE  = "No tiene autorización para realizar la solicitud.";
-
+	
 	private AppConstantes() {
 	    throw new IllegalStateException("AppConstantes class");
 	  }

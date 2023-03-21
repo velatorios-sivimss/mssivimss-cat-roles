@@ -30,9 +30,9 @@ private RolService rolService;
 		return rolService.catalogoRol(request,authentication);
 	}
 	
-	@PostMapping("rol/buscar")
+	@PostMapping("rol/buscar-filtros")
 	public Response<?> buscar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		return rolService.buscarRol(request,authentication);
+		return rolService.buscarFiltrosRol(request,authentication);
 	}
 
 	@PostMapping("rol/detalle")
@@ -50,8 +50,13 @@ private RolService rolService;
 		return rolService.actualizarRol(request,authentication);
 	}
 	
-	@PostMapping("rol/cambiar-estatus")
-	public Response<?> cambiarEstatus(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		return rolService.cambiarEstatusRol(request,authentication);
+	@PostMapping("rol/activar")
+	public Response<?> activar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		return rolService.activarRol(request,authentication);
+	}
+	
+	@PostMapping("rol/borrar")
+	public Response<?> borrar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		return rolService.borrarRol(request,authentication);
 	}
 }

@@ -72,4 +72,14 @@ public class ErrorsMessageResponse {
 		this.datos = datos;
 	}
 
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
 }

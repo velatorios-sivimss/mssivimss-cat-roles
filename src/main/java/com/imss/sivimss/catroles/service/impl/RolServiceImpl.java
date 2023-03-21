@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,9 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.imss.sivimss.catroles.beans.Rol;
-import com.imss.sivimss.catroles.beans.Usuario;
 import com.imss.sivimss.catroles.exception.BadRequestException;
-import com.imss.sivimss.catroles.model.request.RolDto;
 import com.imss.sivimss.catroles.model.request.RolRequest;
 import com.imss.sivimss.catroles.model.request.UsuarioDto;
 import com.imss.sivimss.catroles.model.request.UsuarioRequest;
@@ -37,8 +33,6 @@ public class RolServiceImpl  implements RolService {
 
 	@Autowired
 	private ProviderServiceRestTemplate providerRestTemplate;
-	
-	private static final Logger log = LoggerFactory.getLogger(UsuarioServiceImpl.class);
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -64,9 +58,14 @@ public class RolServiceImpl  implements RolService {
 	}
 	
 	@Override
-	public Response<?> buscarRol(DatosRequest request, Authentication authentication) throws IOException {
-		Rol rol = new Rol();
-		return providerRestTemplate.consumirServicio(rol.buscarRol(request).getDatos(), urlDominioConsulta + "/generico/paginado",
+	public Response<?> buscarFiltrosRol(DatosRequest request, Authentication authentication) throws IOException {
+		Gson gson = new Gson();
+
+		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
+		UsuarioRequest usuarioRequest = gson.fromJson(datosJson, UsuarioRequest.class);
+		
+		Rol rol = new Rol(usuarioRequest);
+		return providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request,rol).getDatos(), urlDominioConsulta + "/generico/paginado",
 				authentication);
 	}
 
@@ -82,6 +81,7 @@ public class RolServiceImpl  implements RolService {
 		Gson gson = new Gson();
 
 		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
+		
 		UsuarioDto usuarioDto = gson.fromJson((String) authentication.getPrincipal(), UsuarioDto.class);
 
 		RolRequest rolRequest = new RolRequest();
@@ -92,8 +92,7 @@ public class RolServiceImpl  implements RolService {
 			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Json incorrecto o mal formado");
 		}
 		Rol rol = new Rol(rolRequest);
-		rol.setClaveAlta(usuarioDto.getCorreo());
-		//rol.setClaveModifica(usuarioDto.getCorreo());
+		rol.setClaveAlta(usuarioDto.getId().toString());
 		
 		return providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlDominioConsulta + "/generico/crear",
 				authentication);
@@ -107,30 +106,50 @@ public class RolServiceImpl  implements RolService {
 		UsuarioDto usuarioDto = gson.fromJson((String) authentication.getPrincipal(), UsuarioDto.class);
 
 		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
-		if (rolRequest.getId() == null) {
+		if (rolRequest.getIdRol() == null) {
 			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Informacion incompleta");
 		}
 		Rol rol = new Rol(rolRequest);
-		rol.setClaveModifica(usuarioDto.getCorreo());
+		rol.setClaveModifica(usuarioDto.getId().toString());
 		
 		return providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlDominioConsulta + "/generico/actualizar",
 				authentication);
 	}
-
+	
 	@Override
-	public Response<?> cambiarEstatusRol(DatosRequest request, Authentication authentication) throws IOException {
+	public Response<?> activarRol(DatosRequest request, Authentication authentication) throws IOException {
 		Gson gson = new Gson();
 
 		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
-		RolDto rolDto = gson.fromJson((String) authentication.getPrincipal(), RolDto.class);
+		UsuarioDto usuarioDto = gson.fromJson((String) authentication.getPrincipal(), UsuarioDto.class);
 
 		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
-		if (rolRequest.getId() == null) {
+		if (rolRequest.getIdRol() == null) {
+			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Informacion incompleta");
+		}
+		Rol rol = new Rol(rolRequest);
+		rol.setClaveModifica(usuarioDto.getId().toString());
+		
+		return providerRestTemplate.consumirServicio(rol.activar().getDatos(), urlDominioConsulta + "/generico/actualizar",
+				authentication);
+	}
+
+	@Override
+	public Response<?> borrarRol(DatosRequest request, Authentication authentication) throws IOException {
+		Gson gson = new Gson();
+
+		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
+		
+		UsuarioDto usuarioDto = gson.fromJson((String) authentication.getPrincipal(), UsuarioDto.class);
+
+		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
+		if (rolRequest.getIdRol() == null) {
 			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Informacion incompleta");
 		}
 		Rol rol= new Rol(rolRequest);
-	//	rol.setClaveBaja(rolDto.getCorreo());
-		return providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlDominioConsulta + "/generico/actualizar",
+		rol.setClaveBaja(usuarioDto.getId().toString());
+		
+		return providerRestTemplate.consumirServicio(rol.borrar().getDatos(), urlDominioConsulta + "/generico/actualizar",
 				authentication);
 	}
 
