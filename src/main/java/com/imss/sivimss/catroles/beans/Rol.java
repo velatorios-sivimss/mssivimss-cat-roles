@@ -24,8 +24,6 @@ import lombok.Setter;
 @Getter
 public class Rol {
 	
-	
-	
 	private Integer idRol;
 	private String desRol;
 	private Integer estatusRol;
@@ -33,6 +31,17 @@ public class Rol {
 	private String claveAlta;
 	private String claveModifica;
 	private String claveBaja;
+	
+	private static final String CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP()";
+	public static final String ID_USUARIO_MODIFICA = "ID_USUARIO_MODIFICA";
+	public static final String FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
+	public static final String ID_USUARIO_BAJA = "ID_USUARIO_BAJA";
+	public static final String UPDATE_SVC_ROL = "UPDATE SVC_ROL";
+	public static final String CVE_ESTATUS = "CVE_ESTATUS";
+	public static final String FEC_BAJA = "FEC_BAJA";
+	public static final String DES_ROL = "DES_ROL";
+	public static final String ID_ROL = "ID_ROL = ";
+	private static final String NULL = "NULL";
 
 
 	public Rol(RolRequest rolRequest) {
@@ -43,6 +52,7 @@ public class Rol {
 	}
 	public Rol(UsuarioRequest usuarioRequest) {
 		this.nivel= usuarioRequest.getIdOficina();
+		this.idRol = usuarioRequest.getIdRol();
 	}
 	
 	public DatosRequest obtenerRoles(DatosRequest request) {
@@ -67,7 +77,7 @@ public class Rol {
 
 	public DatosRequest buscarFiltrosRol(DatosRequest request, Rol rol) {
 		StringBuilder query = new StringBuilder("SELECT  ID_ROL as idRol, DES_ROL as desRol, R.ID_OFICINA AS nivel, R.CVE_ESTATUS AS estatusRol  FROM SVC_ROL AS R");
-		query.append(" WHERE 1 = 1" );
+		query.append(" WHERE IFNULL(ID_ROL,0) > 0" );
 		if (rol.getNivel() != null) {
 			query.append(" AND ID_OFICINA = ").append(this.getNivel());
 		}
@@ -99,14 +109,14 @@ public class Rol {
 		Map<String, Object> parametro = new HashMap<>();
 
 		final QueryHelper q = new QueryHelper("INSERT INTO SVC_ROL");
-		q.agregarParametroValues("" +AppConstantes.DES_ROL + "", "'" + this.desRol + "'");
-		q.agregarParametroValues("" +AppConstantes.CVE_ESTATUS + "", "1");
-		q.agregarParametroValues("FEC_ALTA", "" +AppConstantes.NOW + "");
+		q.agregarParametroValues(DES_ROL, "'" + this.desRol + "'");
+		q.agregarParametroValues(CVE_ESTATUS, "1");
+		q.agregarParametroValues("FEC_ALTA", CURRENT_TIMESTAMP);
 		q.agregarParametroValues("ID_USUARIO_ALTA", "'" + this.claveAlta + "'");
-		q.agregarParametroValues("" +AppConstantes.FEC_ACTUALIZACION + "", "" +AppConstantes.NULL + "");
-		q.agregarParametroValues("" +AppConstantes.ID_USUARIO_MODIFICA + "", "" +AppConstantes.NULL + "");
-		q.agregarParametroValues("" +AppConstantes.ID_USUARIO_BAJA + "", "" +AppConstantes.NULL + "");
-		q.agregarParametroValues("" +AppConstantes.FEC_BAJA + "", "" +AppConstantes.NULL + "");
+		q.agregarParametroValues(FEC_ACTUALIZACION, NULL );
+		q.agregarParametroValues(ID_USUARIO_MODIFICA, NULL);
+		q.agregarParametroValues(ID_USUARIO_BAJA, NULL);
+		q.agregarParametroValues(FEC_BAJA , NULL);
 		q.agregarParametroValues("ID_OFICINA", "" + this.nivel + "");
 		
 		String query = q.obtenerQueryInsertar();
@@ -122,13 +132,13 @@ public class Rol {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
 
-		final QueryHelper q = new QueryHelper("" +AppConstantes.UPDATE_SVC_ROL + "");
-		q.agregarParametroValues("" +AppConstantes.DES_ROL + "", "'" + this.desRol + "'");
-		q.agregarParametroValues("" +AppConstantes.CVE_ESTATUS + "", "" + this.estatusRol +"");
+		final QueryHelper q = new QueryHelper(UPDATE_SVC_ROL);
+		q.agregarParametroValues(DES_ROL, "'" + this.desRol + "'");
+		q.agregarParametroValues(CVE_ESTATUS, "" + this.estatusRol +"");
 		q.agregarParametroValues("ID_OFICINA", "" + this.nivel + "");
-		q.agregarParametroValues("" +AppConstantes.ID_USUARIO_MODIFICA + "", "'" + this.claveModifica + "'");
-		q.agregarParametroValues("" +AppConstantes.FEC_ACTUALIZACION + "", "" +AppConstantes.NOW + "");
-		q.addWhere("" +AppConstantes.ID_ROL + ""  + this.idRol);
+		q.agregarParametroValues(ID_USUARIO_MODIFICA, "'" + this.claveModifica + "'");
+		q.agregarParametroValues(FEC_ACTUALIZACION, CURRENT_TIMESTAMP);
+		q.addWhere(ID_ROL + this.idRol);
 		
 		String query = q.obtenerQueryActualizar();
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
@@ -142,11 +152,11 @@ public class Rol {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
 		
-		final QueryHelper q = new QueryHelper("" +AppConstantes.UPDATE_SVC_ROL + "");
-		q.agregarParametroValues("" +AppConstantes.CVE_ESTATUS + "", "0");
-		q.agregarParametroValues("" +AppConstantes.ID_USUARIO_BAJA + "", "'" + this.claveBaja + "'");
-		q.agregarParametroValues("" +AppConstantes.FEC_BAJA + "", "" +AppConstantes.NOW + "");
-		q.addWhere("" +AppConstantes.ID_ROL + ""  + this.idRol);
+		final QueryHelper q = new QueryHelper(UPDATE_SVC_ROL);
+		q.agregarParametroValues(CVE_ESTATUS, "0");
+		q.agregarParametroValues(ID_USUARIO_BAJA, "'" + this.claveBaja + "'");
+		q.agregarParametroValues(FEC_BAJA, CURRENT_TIMESTAMP);
+		q.addWhere(ID_ROL  + this.idRol);
 		
 		String query = q.obtenerQueryActualizar();
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
@@ -160,11 +170,11 @@ public class Rol {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
 
-		final QueryHelper q = new QueryHelper("" +AppConstantes.UPDATE_SVC_ROL + "");
-		q.agregarParametroValues("" +AppConstantes.CVE_ESTATUS + "", "1");
-		q.agregarParametroValues("" +AppConstantes.ID_USUARIO_MODIFICA + "", "'" + this.claveModifica + "'");
-		q.agregarParametroValues("" +AppConstantes.FEC_ACTUALIZACION + "", "" +AppConstantes.NOW + "");
-		q.addWhere("" +AppConstantes.ID_ROL + ""  + this.idRol);
+		final QueryHelper q = new QueryHelper(UPDATE_SVC_ROL);
+		q.agregarParametroValues(CVE_ESTATUS, "1");
+		q.agregarParametroValues(ID_USUARIO_MODIFICA, "'" + this.claveModifica + "'");
+		q.agregarParametroValues(FEC_ACTUALIZACION, CURRENT_TIMESTAMP);
+		q.addWhere(ID_ROL + this.idRol);
 		
 		String query = q.obtenerQueryActualizar();
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
