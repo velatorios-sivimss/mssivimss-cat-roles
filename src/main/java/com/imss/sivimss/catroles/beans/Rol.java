@@ -153,7 +153,7 @@ public class Rol {
 		Map<String, Object> parametro = new HashMap<>();
 
 		final QueryHelper q = new QueryHelper(UPDATE_SVC_ROL);
-		q.agregarParametroValues(CVE_ESTATUS, '!'+CVE_ESTATUS);
+		q.agregarParametroValues(CVE_ESTATUS, "" + this.estatusRol +"");
 		q.agregarParametroValues(ID_USUARIO_MODIFICA, "'" + this.claveModifica + "'");
 		q.agregarParametroValues(FEC_ACTUALIZACION, CURRENT_TIMESTAMP);
 		q.addWhere(ID_ROL + this.idRol);
