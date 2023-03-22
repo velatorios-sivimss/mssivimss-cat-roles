@@ -50,13 +50,8 @@ private RolService rolService;
 		return rolService.actualizarRol(request,authentication);
 	}
 	
-	@PostMapping("rol/activar")
-	public Response<?> activar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		return rolService.activarRol(request,authentication);
-	}
-	
-	@PostMapping("rol/borrar")
-	public Response<?> borrar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		return rolService.borrarRol(request,authentication);
+	@PostMapping("rol/cambiar-estatus")
+	public Response<?> cambiarEstatusRol(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		return rolService.cambiarEstatusRol(request,authentication);
 	}
 }

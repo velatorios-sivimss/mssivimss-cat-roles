@@ -21,8 +21,6 @@ public interface RolService {
 
 	Response<?> actualizarRol(DatosRequest request, Authentication authentication)throws IOException;
 	
-	Response<?> activarRol(DatosRequest request, Authentication authentication)throws IOException;
-
-	Response<?> borrarRol(DatosRequest request, Authentication authentication)throws IOException;
+	Response<?> cambiarEstatusRol(DatosRequest request, Authentication authentication)throws IOException;
 	
 }

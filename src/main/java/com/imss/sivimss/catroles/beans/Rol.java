@@ -148,30 +148,12 @@ public class Rol {
 		return request;
 	}
 	
-	public DatosRequest borrar() {
-		DatosRequest request = new DatosRequest();
-		Map<String, Object> parametro = new HashMap<>();
-		
-		final QueryHelper q = new QueryHelper(UPDATE_SVC_ROL);
-		q.agregarParametroValues(CVE_ESTATUS, "0");
-		q.agregarParametroValues(ID_USUARIO_BAJA, "'" + this.claveBaja + "'");
-		q.agregarParametroValues(FEC_BAJA, CURRENT_TIMESTAMP);
-		q.addWhere(ID_ROL  + this.idRol);
-		
-		String query = q.obtenerQueryActualizar();
-		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
-		parametro.put(AppConstantes.QUERY, encoded);
-		request.setDatos(parametro);
-		
-		return request;
-	}
-	
-	public DatosRequest activar() {
+	public DatosRequest cambiarEstatus() {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
 
 		final QueryHelper q = new QueryHelper(UPDATE_SVC_ROL);
-		q.agregarParametroValues(CVE_ESTATUS, "1");
+		q.agregarParametroValues(CVE_ESTATUS, '!'+CVE_ESTATUS);
 		q.agregarParametroValues(ID_USUARIO_MODIFICA, "'" + this.claveModifica + "'");
 		q.agregarParametroValues(FEC_ACTUALIZACION, CURRENT_TIMESTAMP);
 		q.addWhere(ID_ROL + this.idRol);

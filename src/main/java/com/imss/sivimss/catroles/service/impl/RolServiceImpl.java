@@ -111,7 +111,7 @@ public class RolServiceImpl  implements RolService {
 	}
 	
 	@Override
-	public Response<?> activarRol(DatosRequest request, Authentication authentication) throws IOException {
+	public Response<?> cambiarEstatusRol(DatosRequest request, Authentication authentication) throws IOException {
 		Gson gson = new Gson();
 
 		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
@@ -124,26 +124,7 @@ public class RolServiceImpl  implements RolService {
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveModifica(usuarioDto.getId().toString());
 		
-		return providerRestTemplate.consumirServicio(rol.activar().getDatos(), urlDominioConsulta + "/generico/actualizar",
-				authentication);
-	}
-
-	@Override
-	public Response<?> borrarRol(DatosRequest request, Authentication authentication) throws IOException {
-		Gson gson = new Gson();
-
-		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
-		
-		UsuarioDto usuarioDto = gson.fromJson((String) authentication.getPrincipal(), UsuarioDto.class);
-
-		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
-		if (rolRequest.getIdRol() == null) {
-			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Informacion incompleta");
-		}
-		Rol rol= new Rol(rolRequest);
-		rol.setClaveBaja(usuarioDto.getId().toString());
-		
-		return providerRestTemplate.consumirServicio(rol.borrar().getDatos(), urlDominioConsulta + "/generico/actualizar",
+		return providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlDominioConsulta + "/generico/actualizar",
 				authentication);
 	}
 
