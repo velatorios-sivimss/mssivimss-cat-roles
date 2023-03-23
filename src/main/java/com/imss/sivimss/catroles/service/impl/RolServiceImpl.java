@@ -28,11 +28,18 @@ import com.imss.sivimss.catroles.util.ValidarResponseUtil;
 
 @Service
 public class RolServiceImpl  implements RolService {
-	
-	private static final String GENERICO_ACTUALIZAR = "/generico/actualizar";
 
 	@Value("${endpoints.dominio-consulta}")
-	private String urlDominioConsulta;
+	private String urlConsulta;
+	
+	@Value("${endpoints.dominio-consulta-paginado}")
+	private String urlConsultaPaginado;
+	
+	@Value("${endpoints.dominio-crear}")
+	private String urlCrear;
+	
+	@Value("${endpoints.dominio-actualizar}")
+	private String urlActualizar;
 
 	@Autowired
 	private ProviderServiceRestTemplate providerRestTemplate;
@@ -43,7 +50,7 @@ public class RolServiceImpl  implements RolService {
 	@Override
 	public Response<?> consultarRoles(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol= new Rol();
-		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.obtenerRoles(request).getDatos(), urlDominioConsulta + "/generico/paginado",
+		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.obtenerRoles(request).getDatos(), urlConsultaPaginado,
 				authentication));
 	}
 
@@ -51,8 +58,7 @@ public class RolServiceImpl  implements RolService {
 	public Response<?> catalogoRol(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol= new Rol();
 		List<RolResponse> rolResponses;
-		Response<?> response =  providerRestTemplate.consumirServicio(rol.catalogoRol().getDatos(),
-				urlDominioConsulta.concat("/generico/consulta"), authentication);
+		Response<?> response =  providerRestTemplate.consumirServicio(rol.catalogoRol().getDatos(),urlConsulta, authentication);
 		if (response.getCodigo() == 200) {
 			rolResponses = Arrays.asList(modelMapper.map(response.getDatos(), RolResponse[].class));
 			response.setDatos(ConvertirGenerico.convertInstanceOfObject(rolResponses));
@@ -68,14 +74,14 @@ public class RolServiceImpl  implements RolService {
 		UsuarioRequest usuarioRequest = gson.fromJson(datosJson, UsuarioRequest.class);
 		
 		Rol rol = new Rol(usuarioRequest);
-		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request,rol).getDatos(), urlDominioConsulta.concat("/generico/paginado"),
+		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request,rol).getDatos(), urlConsultaPaginado,
 				authentication));
 	}
 
 	@Override
 	public Response<?> detalleRol(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol = new Rol();
-		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request).getDatos(), urlDominioConsulta.concat("/generico/consulta"),
+		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request).getDatos(), urlConsulta,
 				authentication));
 	}
 
@@ -91,7 +97,7 @@ public class RolServiceImpl  implements RolService {
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveAlta(usuarioDto.getId().toString());
 		
-		return ValidarResponseUtil.validarAgregaResponse(providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlDominioConsulta.concat("/generico/crear"),
+		return ValidarResponseUtil.validarAgregaResponse(providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear,
 				authentication));
 	}
 
@@ -109,7 +115,7 @@ public class RolServiceImpl  implements RolService {
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveModifica(usuarioDto.getId().toString());
 		
-		return ValidarResponseUtil.validarActualizaResponse(providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlDominioConsulta.concat(GENERICO_ACTUALIZAR),
+		return ValidarResponseUtil.validarActualizaResponse(providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlActualizar,
 				authentication));
 	}
 	
@@ -128,10 +134,10 @@ public class RolServiceImpl  implements RolService {
 		rol.setClaveModifica(usuarioDto.getId().toString());
 		
 		if (rol.getEstatusRol()  == 1) {
-			return ValidarResponseUtil.validarActivaResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlDominioConsulta.concat(GENERICO_ACTUALIZAR),
+			return ValidarResponseUtil.validarActivaResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
 					authentication));
 		} else {
-			return ValidarResponseUtil.validarDesactivaResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlDominioConsulta.concat(GENERICO_ACTUALIZAR),
+			return ValidarResponseUtil.validarDesactivaResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
 					authentication));
 		}
 	}
