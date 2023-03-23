@@ -24,10 +24,12 @@ import com.imss.sivimss.catroles.util.ConvertirGenerico;
 import com.imss.sivimss.catroles.util.DatosRequest;
 import com.imss.sivimss.catroles.util.ProviderServiceRestTemplate;
 import com.imss.sivimss.catroles.util.Response;
-import com.imss.sivimss.catroles.util.ValidarResponseUtil;
+import com.imss.sivimss.catroles.util.MensajeResponseUtil;
 
 @Service
 public class RolServiceImpl  implements RolService {
+
+	private static final String _045 = "045";
 
 	@Value("${endpoints.dominio-consulta}")
 	private String urlConsulta;
@@ -50,8 +52,9 @@ public class RolServiceImpl  implements RolService {
 	@Override
 	public Response<?> consultarRoles(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol= new Rol();
-		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.obtenerRoles(request).getDatos(), urlConsultaPaginado,
-				authentication));
+		String numeroMensaje  = _045;
+		return MensajeResponseUtil.mensajeConsultaResponse( providerRestTemplate.consumirServicio(rol.obtenerRoles(request).getDatos(), urlConsultaPaginado,
+				authentication), numeroMensaje );
 	}
 
 	@Override
@@ -74,15 +77,17 @@ public class RolServiceImpl  implements RolService {
 		UsuarioRequest usuarioRequest = gson.fromJson(datosJson, UsuarioRequest.class);
 		
 		Rol rol = new Rol(usuarioRequest);
-		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request,rol).getDatos(), urlConsultaPaginado,
-				authentication));
+		String numeroMensaje  = _045;
+		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request,rol).getDatos(), urlConsultaPaginado,
+				authentication), numeroMensaje);
 	}
 
 	@Override
 	public Response<?> detalleRol(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol = new Rol();
-		return ValidarResponseUtil.validarConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request).getDatos(), urlConsulta,
-				authentication));
+		String numeroMensaje  = _045;
+		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request).getDatos(), urlConsulta,
+				authentication), numeroMensaje);
 	}
 
 	@Override
@@ -95,10 +100,10 @@ public class RolServiceImpl  implements RolService {
 
 		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
 		Rol rol = new Rol(rolRequest);
-		rol.setClaveAlta(usuarioDto.getId().toString());
-		
-		return ValidarResponseUtil.validarAgregaResponse(providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear,
-				authentication));
+		rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
+		String numeroMensaje  = "030";
+		return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear,
+				authentication), numeroMensaje);
 	}
 
 	@Override
@@ -113,10 +118,10 @@ public class RolServiceImpl  implements RolService {
 			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Informacion incompleta");
 		}
 		Rol rol = new Rol(rolRequest);
-		rol.setClaveModifica(usuarioDto.getId().toString());
-		
-		return ValidarResponseUtil.validarActualizaResponse(providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlActualizar,
-				authentication));
+		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
+		String numeroMensaje  = "018";
+		return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlActualizar,
+				authentication), numeroMensaje);
 	}
 	
 	@Override
@@ -131,14 +136,16 @@ public class RolServiceImpl  implements RolService {
 			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Informacion incompleta");
 		}
 		Rol rol = new Rol(rolRequest);
-		rol.setClaveModifica(usuarioDto.getId().toString());
+		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
 		
 		if (rol.getEstatusRol()  == 1) {
-			return ValidarResponseUtil.validarActivaResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
-					authentication));
+			String numeroMensaje  = "069";
+			return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
+					authentication), numeroMensaje);
 		} else {
-			return ValidarResponseUtil.validarDesactivaResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
-					authentication));
+			String numeroMensaje  = "019";
+			return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
+					authentication), numeroMensaje);
 		}
 	}
 
