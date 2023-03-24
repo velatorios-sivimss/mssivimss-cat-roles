@@ -28,8 +28,12 @@ import com.imss.sivimss.catroles.util.MensajeResponseUtil;
 
 @Service
 public class RolServiceImpl  implements RolService {
-
-	private static final String _045 = "45";
+	
+	private static final String AGREGADO_CORRECTAMENTE = "30"; // Agregado correctamente.
+	private static final String MODIFICADO_CORRECTAMENTE = "18";  // Modificado correctamente.
+	private static final String DESACTIVADO_CORRECTAMENTE = "19";  // Desactivado correctamente.
+	private static final String SIN_INFORMACION = "45";  // No se encontró información relacionada a tu búsqueda.
+	private static final String ACTIVADO_CORRECTAMENTE = "69";  // Activado correctamente.
 
 	@Value("${endpoints.dominio-consulta}")
 	private String urlConsulta;
@@ -52,9 +56,8 @@ public class RolServiceImpl  implements RolService {
 	@Override
 	public Response<?> consultarRoles(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol= new Rol();
-		String numeroMensaje  = _045;
 		return MensajeResponseUtil.mensajeConsultaResponse( providerRestTemplate.consumirServicio(rol.obtenerRoles(request).getDatos(), urlConsultaPaginado,
-				authentication), numeroMensaje );
+				authentication), SIN_INFORMACION );
 	}
 
 	@Override
@@ -77,17 +80,17 @@ public class RolServiceImpl  implements RolService {
 		UsuarioRequest usuarioRequest = gson.fromJson(datosJson, UsuarioRequest.class);
 		
 		Rol rol = new Rol(usuarioRequest);
-		String numeroMensaje  = _045;
+
 		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request,rol).getDatos(), urlConsultaPaginado,
-				authentication), numeroMensaje);
+				authentication), SIN_INFORMACION);
 	}
 
 	@Override
 	public Response<?> detalleRol(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol = new Rol();
-		String numeroMensaje  = _045;
+		
 		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request).getDatos(), urlConsulta,
-				authentication), numeroMensaje);
+				authentication), SIN_INFORMACION);
 	}
 
 	@Override
@@ -101,8 +104,7 @@ public class RolServiceImpl  implements RolService {
 		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
-		String numeroMensaje  = "30";
-		return MensajeResponseUtil.mensajeResponse( providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear,authentication), numeroMensaje);
+		return MensajeResponseUtil.mensajeResponse( providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear,authentication), AGREGADO_CORRECTAMENTE);
 	}
 
 	@Override
@@ -118,9 +120,8 @@ public class RolServiceImpl  implements RolService {
 		}
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
-		String numeroMensaje  = "18";
 		return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlActualizar,
-				authentication), numeroMensaje);
+				authentication), MODIFICADO_CORRECTAMENTE);
 	}
 	
 	@Override
@@ -138,13 +139,11 @@ public class RolServiceImpl  implements RolService {
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
 		
 		if (rol.getEstatusRol()  == 1) {
-			String numeroMensaje  = "69";
 			return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
-					authentication), numeroMensaje);
+					authentication), ACTIVADO_CORRECTAMENTE);
 		} else {
-			String numeroMensaje  = "19";
 			return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
-					authentication), numeroMensaje);
+					authentication), DESACTIVADO_CORRECTAMENTE);
 		}
 	}
 
