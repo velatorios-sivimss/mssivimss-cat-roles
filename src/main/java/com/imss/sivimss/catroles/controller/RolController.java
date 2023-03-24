@@ -3,8 +3,6 @@ package com.imss.sivimss.catroles.controller;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +27,6 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/")
 public class RolController {
-	
-	private static final Logger log = LoggerFactory.getLogger(RolController.class);
 	
 	@Autowired
 	private RolService rolService;
@@ -75,7 +71,6 @@ public class RolController {
 	@TimeLimiter(name = "msflujo")
 	public CompletableFuture<?> detalle(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
 		Response<?> response =  rolService.detalleRol(request,authentication);
-		
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	
@@ -85,7 +80,6 @@ public class RolController {
 	@TimeLimiter(name = "msflujo")
 	public CompletableFuture<?> agregar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
 		Response<?> response =  rolService.agregarRol(request,authentication);
-		log.info("codigo: " + response.getCodigo() );
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	
@@ -95,7 +89,6 @@ public class RolController {
 	@TimeLimiter(name = "msflujo")
 	public CompletableFuture<?> actualizar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
 		Response<?> response =  rolService.actualizarRol(request,authentication);
-		
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	
@@ -103,13 +96,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?>  cambiarEstatusRol(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		
+	public CompletableFuture<?>  cambiarEstatusRol(@RequestBody DatosRequest request,Authentication authentication) throws IOException {		
 		Response<?> response = rolService.cambiarEstatusRol(request,authentication);
-		
-		log.info("RolController: " + response.getMensaje());
-		log.info("RolController.codigo: " + response.getCodigo());
-		
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	

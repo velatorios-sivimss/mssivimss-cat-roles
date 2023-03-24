@@ -14,17 +14,12 @@ public class MensajeResponseUtil {
 	
 	public  static Response<?>mensajeResponse(Response<?> respuestaGenerado, String numeroMensaje) {
 		Integer codigo = respuestaGenerado.getCodigo();
-		
 		if (codigo == 200) {
 			respuestaGenerado.setMensaje(numeroMensaje);
 		} else {
-			log.error("Error.. {}",respuestaGenerado.getMensaje());
+			log.error("Error.. {}", respuestaGenerado.getMensaje());
 			respuestaGenerado.setMensaje("5");
 		} 
-		
-		log.info("Error.. {}",respuestaGenerado.getMensaje());
-		
-		
 		return respuestaGenerado;
 	}
 	
