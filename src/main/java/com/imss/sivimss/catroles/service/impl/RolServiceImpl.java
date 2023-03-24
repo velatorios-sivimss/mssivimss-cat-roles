@@ -29,7 +29,7 @@ import com.imss.sivimss.catroles.util.MensajeResponseUtil;
 @Service
 public class RolServiceImpl  implements RolService {
 
-	private static final String _045 = "045";
+	private static final String _045 = "45";
 
 	@Value("${endpoints.dominio-consulta}")
 	private String urlConsulta;
@@ -101,9 +101,8 @@ public class RolServiceImpl  implements RolService {
 		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
-		String numeroMensaje  = "030";
-		return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear,
-				authentication), numeroMensaje);
+		String numeroMensaje  = "30";
+		return MensajeResponseUtil.mensajeResponse( providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear,authentication), numeroMensaje);
 	}
 
 	@Override
@@ -119,7 +118,7 @@ public class RolServiceImpl  implements RolService {
 		}
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
-		String numeroMensaje  = "018";
+		String numeroMensaje  = "18";
 		return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlActualizar,
 				authentication), numeroMensaje);
 	}
@@ -139,11 +138,11 @@ public class RolServiceImpl  implements RolService {
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
 		
 		if (rol.getEstatusRol()  == 1) {
-			String numeroMensaje  = "069";
+			String numeroMensaje  = "69";
 			return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
 					authentication), numeroMensaje);
 		} else {
-			String numeroMensaje  = "019";
+			String numeroMensaje  = "19";
 			return MensajeResponseUtil.mensajeResponse(providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar,
 					authentication), numeroMensaje);
 		}
