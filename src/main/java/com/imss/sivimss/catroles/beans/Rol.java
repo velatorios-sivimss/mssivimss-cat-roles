@@ -57,7 +57,7 @@ public class Rol {
 	
 	public DatosRequest obtenerRoles(DatosRequest request) {
 		String query = "SELECT R.ID_ROL AS idRol, R.DES_ROL AS desRol, \r\n "
-				+ "R.ID_OFICINA AS nivel, R.FEC_ALTA AS fCreacion, \r\n"
+				+ "R.ID_OFICINA AS nivel, date_format(R.FEC_ALTA, \"%d/%m/%Y\") AS fCreacion, \r\n"
 				+ "R.CVE_ESTATUS AS estatus FROM SVC_ROL AS R ORDER BY ID_ROL ASC";
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
 		request.getDatos().put(AppConstantes.QUERY, encoded);
@@ -97,7 +97,7 @@ public class Rol {
 	public DatosRequest detalleRol(DatosRequest request) {
 		String query = "SELECT R.ID_ROL as id, R.DES_ROL as desRol, \r\n"
 				+ "R.ID_OFICINA AS nivel, R.CVE_ESTATUS AS estatusRol,\r\n"
-				+ "R.FEC_ALTA AS fCreacion FROM SVC_ROL AS R WHERE ID_ROL = " + Integer.parseInt(request.getDatos().get("id").toString()) + " ORDER BY ID_ROL DESC";
+				+ "date_format(R.FEC_ALTA, \"%d/%m/%Y\") AS fCreacion FROM SVC_ROL AS R WHERE ID_ROL = " + Integer.parseInt(request.getDatos().get("id").toString()) + " ORDER BY ID_ROL DESC";
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
 		request.getDatos().remove("id");
 		request.getDatos().put(AppConstantes.QUERY, encoded);
