@@ -78,7 +78,7 @@ public class Rol {
 
 	public DatosRequest buscarFiltrosRol(DatosRequest request, Rol rol) {
 		StringBuilder query = new StringBuilder(" SELECT  ID_ROL as idRol, DES_ROL as desRol, NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, "
-				+ "R.CVE_ESTATUS AS estatusRol  FROM SVC_ROL AS R "
+				+ " R.CVE_ESTATUS AS estatusRol, date_format(R.FEC_ALTA, \"%d/%m/%Y\") AS fCreacion FROM SVC_ROL AS R "
 				+ " INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA ");
 		query.append(" WHERE IFNULL(ID_ROL,0) > 0" );
 		if (rol.getNivel() != null) {
