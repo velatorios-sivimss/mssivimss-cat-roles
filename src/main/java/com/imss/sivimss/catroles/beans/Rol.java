@@ -57,7 +57,7 @@ public class Rol {
 	
 	public DatosRequest obtenerRoles(DatosRequest request) {
 		String query = "SELECT R.ID_ROL AS idRol, R.DES_ROL AS desRol, \r\n "
-				+ "NO.DES_NIVELOFICINA AS desNivelOficina, date_format(R.FEC_ALTA, \"%d/%m/%Y\") AS fCreacion, \r\n"
+				+ "NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, date_format(R.FEC_ALTA, \"%d/%m/%Y\") AS fCreacion, \r\n"
 				+ "R.CVE_ESTATUS AS estatus FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA "
 				+ "ORDER BY ID_ROL ASC";
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
@@ -77,7 +77,8 @@ public class Rol {
 	}
 
 	public DatosRequest buscarFiltrosRol(DatosRequest request, Rol rol) {
-		StringBuilder query = new StringBuilder(" SELECT  ID_ROL as idRol, DES_ROL as desRol, NO.DES_NIVELOFICINA AS desNivelOficina, R.CVE_ESTATUS AS estatusRol  FROM SVC_ROL AS R "
+		StringBuilder query = new StringBuilder(" SELECT  ID_ROL as idRol, DES_ROL as desRol, NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, "
+				+ "R.CVE_ESTATUS AS estatusRol  FROM SVC_ROL AS R "
 				+ " INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA ");
 		query.append(" WHERE IFNULL(ID_ROL,0) > 0" );
 		if (rol.getNivel() != null) {
@@ -98,7 +99,7 @@ public class Rol {
 
 	public DatosRequest detalleRol(DatosRequest request) {
 		String query = "SELECT R.ID_ROL as id, R.DES_ROL as desRol, \r\n"
-				+ "NO.DES_NIVELOFICINA AS desNivelOficina, R.CVE_ESTATUS AS estatusRol,\r\n"
+				+ "NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, R.CVE_ESTATUS AS estatusRol,\r\n"
 				+ "date_format(R.FEC_ALTA, \"%d/%m/%Y\") AS fCreacion FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA WHERE ID_ROL = " 
 				+ Integer.parseInt(request.getDatos().get("id").toString()) + " ORDER BY ID_ROL DESC";
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
