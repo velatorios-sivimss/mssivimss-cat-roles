@@ -72,3 +72,6 @@ resilience4j.timelimiter:
     instances:
       msflujo:
         timeout-duration: 3s
+        
+        
+formato_fecha: '%d/%m/%Y'

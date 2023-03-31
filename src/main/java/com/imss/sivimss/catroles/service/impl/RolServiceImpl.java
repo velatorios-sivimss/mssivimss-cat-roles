@@ -46,6 +46,9 @@ public class RolServiceImpl  implements RolService {
 	
 	@Value("${endpoints.dominio-actualizar}")
 	private String urlActualizar;
+	
+	@Value("${formato_fecha}")
+	private String formatoFecha;
 
 	@Autowired
 	private ProviderServiceRestTemplate providerRestTemplate;
@@ -56,7 +59,7 @@ public class RolServiceImpl  implements RolService {
 	@Override
 	public Response<?> consultarRoles(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol= new Rol();
-		return MensajeResponseUtil.mensajeConsultaResponse( providerRestTemplate.consumirServicio(rol.obtenerRoles(request).getDatos(), urlConsultaPaginado,
+		return MensajeResponseUtil.mensajeConsultaResponse( providerRestTemplate.consumirServicio(rol.obtenerRoles(request, formatoFecha).getDatos(), urlConsultaPaginado,
 				authentication), SIN_INFORMACION );
 	}
 
@@ -81,7 +84,7 @@ public class RolServiceImpl  implements RolService {
 		
 		Rol rol = new Rol(usuarioRequest);
 
-		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request,rol).getDatos(), urlConsultaPaginado,
+		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.buscarFiltrosRol(request, rol, formatoFecha).getDatos(), urlConsultaPaginado,
 				authentication), SIN_INFORMACION);
 	}
 
@@ -89,7 +92,7 @@ public class RolServiceImpl  implements RolService {
 	public Response<?> detalleRol(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol = new Rol();
 		
-		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request).getDatos(), urlConsulta,
+		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request, formatoFecha).getDatos(), urlConsulta,
 				authentication), SIN_INFORMACION);
 	}
 
