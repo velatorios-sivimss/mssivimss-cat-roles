@@ -10,6 +10,7 @@ import com.imss.sivimss.catroles.model.request.UsuarioRequest;
 import com.imss.sivimss.catroles.util.AppConstantes;
 import com.imss.sivimss.catroles.util.DatosRequest;
 import com.imss.sivimss.catroles.util.QueryHelper;
+import com.imss.sivimss.catroles.model.request.ReporteDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -168,5 +169,24 @@ public class Rol {
 		request.setDatos(parametro);
 		
 		return request;
+	}
+
+	public Map<String, Object> generarReporte(ReporteDto reporteDto, String nombrePdfReportes) {
+		Map<String, Object> envioDatos = new HashMap<>();
+		String condicion = " ";
+		if ( this.idRol != null && this.nivel != null ) {
+			condicion = " AND R.ID_OFICINA = " + this.nivel + " AND R.ID_ROL = " + this.idRol ;
+		}
+		else if (this.idRol != null ) {
+			condicion =  " AND R.ID_ROL = " + this.idRol ;
+		}else if (this.nivel != null ) {
+			condicion = " AND R.ID_OFICINA = " + this.nivel ;
+		}
+		condicion = condicion + " ORDER BY R.ID_ROL desc";
+		envioDatos.put("condicion", condicion);
+		envioDatos.put("tipoReporte", reporteDto.getTipoReporte());
+		envioDatos.put("rutaNombreReporte", nombrePdfReportes);
+
+		return envioDatos;
 	}
 }

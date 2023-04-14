@@ -100,7 +100,15 @@ public class RolController {
 		Response<?> response = rolService.cambiarEstatusRol(request,authentication);
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
+	@PostMapping("/generarDocumento")
+	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
+	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
+	@TimeLimiter(name = "msflujo")
+	public CompletableFuture<Object>  generarDocumento(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
 	
+		Response<?> response =  rolService.generarDocumento(request,authentication);
+		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));  
+	}
 	/**
 	 * fallbacks generico
 	 * 
