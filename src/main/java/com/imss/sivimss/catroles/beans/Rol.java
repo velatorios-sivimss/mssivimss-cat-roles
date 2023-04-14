@@ -89,7 +89,7 @@ public class Rol {
 			query.append(" AND R.ID_ROL = ").append(this.getIdRol());
 		}
 		
-		query.append(" ORDER BY R.ID_ROL DESC");
+		query.append(" ORDER BY R.ID_ROL ASC");
 		
 		String encoded = DatatypeConverter.printBase64Binary(query.toString().getBytes());
 		request.getDatos().put(AppConstantes.QUERY, encoded);
@@ -182,7 +182,7 @@ public class Rol {
 		}else if (this.nivel != null ) {
 			condicion = " AND R.ID_OFICINA = " + this.nivel ;
 		}
-		condicion = condicion + " ORDER BY R.ID_ROL desc";
+		condicion = condicion + " ORDER BY R.ID_ROL ASC";
 		envioDatos.put("condicion", condicion);
 		envioDatos.put("tipoReporte", reporteDto.getTipoReporte());
 		envioDatos.put("rutaNombreReporte", nombrePdfReportes);
