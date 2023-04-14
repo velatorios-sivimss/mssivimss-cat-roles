@@ -20,7 +20,9 @@ public interface RolService {
 	Response<?> agregarRol(DatosRequest request, Authentication authentication)throws IOException;
 
 	Response<?> actualizarRol(DatosRequest request, Authentication authentication)throws IOException;
-	
+
 	Response<?> cambiarEstatusRol(DatosRequest request, Authentication authentication)throws IOException;
+	
+	Response<?> generarDocumento(DatosRequest request, Authentication authentication)throws IOException;
 	
 }

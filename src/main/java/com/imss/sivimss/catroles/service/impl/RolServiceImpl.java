@@ -3,6 +3,7 @@ package com.imss.sivimss.catroles.service.impl;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.imss.sivimss.catroles.beans.Rol;
 import com.imss.sivimss.catroles.exception.BadRequestException;
+import com.imss.sivimss.catroles.model.request.ReporteDto;
 import com.imss.sivimss.catroles.model.request.RolRequest;
 import com.imss.sivimss.catroles.model.request.UsuarioDto;
 import com.imss.sivimss.catroles.model.request.UsuarioRequest;
@@ -34,6 +36,8 @@ public class RolServiceImpl  implements RolService {
 	private static final String DESACTIVADO_CORRECTAMENTE = "19";  // Desactivado correctamente.
 	private static final String SIN_INFORMACION = "45";  // No se encontró información relacionada a tu búsqueda.
 	private static final String ACTIVADO_CORRECTAMENTE = "69";  // Activado correctamente.
+	private static final String ERROR_AL_DESCARGAR_DOCUMENTO= "64"; // Error en la descarga del documento.Intenta nuevamente.
+
 
 	@Value("${endpoints.dominio-consulta}")
 	private String urlConsulta;
@@ -50,6 +54,13 @@ public class RolServiceImpl  implements RolService {
 	@Value("${formato_fecha}")
 	private String formatoFecha;
 
+
+	@Value("${reportes.pdf-reporteGestionRol}")
+	private String nombrePdfReportes;
+
+	@Value("${endpoints.ms-reportes}")
+	private String urlReportes;
+	
 	@Autowired
 	private ProviderServiceRestTemplate providerRestTemplate;
 	
@@ -156,5 +167,18 @@ public class RolServiceImpl  implements RolService {
 		}
 	}
 
+	@Override
+	public Response<?> generarDocumento(DatosRequest request, Authentication authentication)throws IOException {
+		Gson gson = new Gson();
+		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
+		RolRequest rolRequest = gson.fromJson(datosJson, RolRequest.class);
+		Rol rol= new Rol();
+		rol = new Rol(rolRequest);
+		ReporteDto reporteDto= gson.fromJson(datosJson, ReporteDto.class);
+		Map<String, Object> envioDatos = rol.generarReporte(reporteDto,nombrePdfReportes);
+		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicioReportes(envioDatos, urlReportes, authentication)
+				, ERROR_AL_DESCARGAR_DOCUMENTO);
+		
+	}
 
 }
