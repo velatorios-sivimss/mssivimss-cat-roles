@@ -42,7 +42,7 @@ reportes:
 jwt:
   secretkey-flujo: ${msit_SECRET_KEY}
   secretkey-dominios: ${msit_SECRET_KEY_DOMINIO}
-  expiration-milliseconds: 360
+  expiration-milliseconds: ${msit_SECRET_KEY_EXPIRATION}
   
 management:
       endpoints:
