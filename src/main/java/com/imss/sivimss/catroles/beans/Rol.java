@@ -10,6 +10,7 @@ import com.imss.sivimss.catroles.model.request.UsuarioRequest;
 import com.imss.sivimss.catroles.util.AppConstantes;
 import com.imss.sivimss.catroles.util.DatosRequest;
 import com.imss.sivimss.catroles.util.QueryHelper;
+import com.imss.sivimss.catroles.model.request.ReporteDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,10 +56,11 @@ public class Rol {
 		this.idRol = usuarioRequest.getIdRol();
 	}
 	
-	public DatosRequest obtenerRoles(DatosRequest request) {
+	public DatosRequest obtenerRoles(DatosRequest request, String formatoFecha) {
 		String query = "SELECT R.ID_ROL AS idRol, R.DES_ROL AS desRol, \r\n "
-				+ "R.ID_OFICINA AS nivel, R.FEC_ALTA AS fCreacion, \r\n"
-				+ "R.CVE_ESTATUS AS estatus FROM SVC_ROL AS R ORDER BY ID_ROL ASC";
+				+ "NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, date_format(R.FEC_ALTA,'" + formatoFecha+ "') AS fCreacion, \r\n"
+				+ "R.CVE_ESTATUS AS estatus FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA "
+				+ "ORDER BY ID_ROL ASC";
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
 		request.getDatos().put(AppConstantes.QUERY, encoded);
 
@@ -75,17 +77,19 @@ public class Rol {
 		return request;
 	}
 
-	public DatosRequest buscarFiltrosRol(DatosRequest request, Rol rol) {
-		StringBuilder query = new StringBuilder("SELECT  ID_ROL as idRol, DES_ROL as desRol, R.ID_OFICINA AS nivel, R.CVE_ESTATUS AS estatusRol  FROM SVC_ROL AS R");
+	public DatosRequest buscarFiltrosRol(DatosRequest request, Rol rol, String formatoFecha) {
+		StringBuilder query = new StringBuilder(" SELECT  ID_ROL as idRol, DES_ROL as desRol, NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, "
+				+ " R.CVE_ESTATUS AS estatusRol, date_format(R.FEC_ALTA,'"+ formatoFecha+ "') AS fCreacion FROM SVC_ROL AS R "
+				+ " INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA ");
 		query.append(" WHERE IFNULL(ID_ROL,0) > 0" );
 		if (rol.getNivel() != null) {
-			query.append(" AND ID_OFICINA = ").append(this.getNivel());
+			query.append(" AND R.ID_OFICINA = ").append(this.getNivel());
 		}
 		if (this.getIdRol() != null) {
-			query.append(" AND ID_ROL = ").append(this.getIdRol());
+			query.append(" AND R.ID_ROL = ").append(this.getIdRol());
 		}
 		
-		query.append(" ORDER BY ID_ROL DESC");
+		query.append(" ORDER BY R.ID_ROL ASC");
 		
 		String encoded = DatatypeConverter.printBase64Binary(query.toString().getBytes());
 		request.getDatos().put(AppConstantes.QUERY, encoded);
@@ -94,10 +98,11 @@ public class Rol {
 	
 
 
-	public DatosRequest detalleRol(DatosRequest request) {
+	public DatosRequest detalleRol(DatosRequest request, String formatoFecha) {
 		String query = "SELECT R.ID_ROL as id, R.DES_ROL as desRol, \r\n"
-				+ "R.ID_OFICINA AS nivel, R.CVE_ESTATUS AS estatusRol,\r\n"
-				+ "R.FEC_ALTA AS fCreacion FROM SVC_ROL AS R WHERE ID_ROL = " + Integer.parseInt(request.getDatos().get("id").toString()) + " ORDER BY ID_ROL DESC";
+				+ "NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, R.CVE_ESTATUS AS estatusRol,\r\n"
+				+ "date_format(R.FEC_ALTA, '"+ formatoFecha+ "') AS fCreacion FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA WHERE ID_ROL = " 
+				+ Integer.parseInt(request.getDatos().get("id").toString()) + " ORDER BY ID_ROL DESC";
 		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
 		request.getDatos().remove("id");
 		request.getDatos().put(AppConstantes.QUERY, encoded);
@@ -153,7 +158,7 @@ public class Rol {
 		Map<String, Object> parametro = new HashMap<>();
 
 		final QueryHelper q = new QueryHelper(UPDATE_SVC_ROL);
-		q.agregarParametroValues(CVE_ESTATUS, '!'+CVE_ESTATUS);
+		q.agregarParametroValues(CVE_ESTATUS, "" + this.estatusRol +"");
 		q.agregarParametroValues(ID_USUARIO_MODIFICA, "'" + this.claveModifica + "'");
 		q.agregarParametroValues(FEC_ACTUALIZACION, CURRENT_TIMESTAMP);
 		q.addWhere(ID_ROL + this.idRol);
@@ -164,5 +169,24 @@ public class Rol {
 		request.setDatos(parametro);
 		
 		return request;
+	}
+
+	public Map<String, Object> generarReporte(ReporteDto reporteDto, String nombrePdfReportes) {
+		Map<String, Object> envioDatos = new HashMap<>();
+		String condicion = " ";
+		if ( this.idRol != null && this.nivel != null ) {
+			condicion = " AND R.ID_OFICINA = " + this.nivel + " AND R.ID_ROL = " + this.idRol ;
+		}
+		else if (this.idRol != null ) {
+			condicion =  " AND R.ID_ROL = " + this.idRol ;
+		}else if (this.nivel != null ) {
+			condicion = " AND R.ID_OFICINA = " + this.nivel ;
+		}
+		condicion = condicion + " ORDER BY R.ID_ROL ASC";
+		envioDatos.put("condicion", condicion);
+		envioDatos.put("tipoReporte", reporteDto.getTipoReporte());
+		envioDatos.put("rutaNombreReporte", nombrePdfReportes);
+
+		return envioDatos;
 	}
 }
