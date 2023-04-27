@@ -78,4 +78,4 @@ resilience4j.timelimiter:
         
         
 formato_fecha: ${msit_FORMATO_FECHA}
-ruta-log: ${msit_REMITENTE}
+ruta-log: ${msit_RUTA_LOG}
