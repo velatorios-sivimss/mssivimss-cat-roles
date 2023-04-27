@@ -87,8 +87,7 @@ public class RolServiceImpl  implements RolService {
 		RolRequest rolRequest = new RolRequest();
 		try {
 			rolRequest = gson.fromJson(datosJson, RolRequest.class);
-		} catch (Exception e) {
-			log.info(e.getMessage());
+		} catch (Exception e) { 
 			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Json incorrecto o mal formado");
 		}
 		Rol rol = new Rol(rolRequest);
