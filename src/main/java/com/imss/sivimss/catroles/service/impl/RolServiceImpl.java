@@ -101,9 +101,16 @@ public class RolServiceImpl  implements RolService {
 
 	@Override
 	public Response<?> detalleRol(DatosRequest request, Authentication authentication) throws IOException {
-		Rol rol = new Rol();
+
+		Gson gson = new Gson();
+
+		String datosJson = String.valueOf(request.getDatos().get(AppConstantes.DATOS));
+		UsuarioRequest usuarioRequest = gson.fromJson(datosJson, UsuarioRequest.class);
 		
-		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request, formatoFecha).getDatos(), urlConsulta,
+		Rol rol = new Rol(usuarioRequest);
+
+		
+		return MensajeResponseUtil.mensajeConsultaResponse(providerRestTemplate.consumirServicio(rol.detalleRol(request, rol, formatoFecha).getDatos(), urlConsulta,
 				authentication), SIN_INFORMACION);
 	}
 

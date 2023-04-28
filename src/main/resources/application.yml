@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    contextPath: /mssivimss-cat-roles
+    contextPath: /mssivimss-cat-roles/v1
 spring:
   mvc:
     pathmatch:
@@ -36,7 +36,7 @@ endpoints:
    dominio-consulta-paginado: http://localhost:8094/mssivimss-mod-catalogos/generico/paginado
    dominio-crear: http://localhost:8094/mssivimss-mod-catalogos/generico/crear
    dominio-actualizar: http://localhost:8094/mssivimss-mod-catalogos/generico/actualizar
-   ms-reportes: http://localhost:8088/mssivimss-reportes-jpr/importe-facturacion-combustible/mensual/generar-reporte
+   ms-reportes: http://localhost:8088/mssivimss-reportes-jpr/v1/generales/generar-reporte
 
 reportes:
    pdf-reporteGestionRol: reportes/generales/ReporteGestionRol.jrxml
@@ -79,3 +79,6 @@ resilience4j.timelimiter:
         
         
 formato_fecha: '%d/%m/%Y'
+
+
+ruta-log: 'C:/Users/opimentel/Documents/logs/Roles/'
