@@ -11,8 +11,8 @@ import lombok.Setter;
 public class RolDto {
 
 	private Integer id;
-	private String des_rol;
+	private String desRol;
 	private String estatus;
-	private String cve_matricula_alta;
+	private String cveMatriculaAlta;
 	private Integer nivel;
 }
