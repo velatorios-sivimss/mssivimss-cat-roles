@@ -87,16 +87,16 @@ public class RolServiceImpl implements RolService {
 	public Response<?> consultarRoles(DatosRequest request, Authentication authentication) throws IOException {
 		Rol rol = new Rol();
 		try {
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),
-					this.getClass().getPackage().toString(), "consultarRoles", CONSULTA, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),
+			//		this.getClass().getPackage().toString(), "consultarRoles", CONSULTA, authentication);
 			response = providerRestTemplate.consumirServicio(rol.obtenerRoles(request, formatoFecha).getDatos(), urlConsultaPaginado, authentication);
 			return MensajeResponseUtil.mensajeConsultaResponse(response, SIN_INFORMACION);
 		} catch (Exception e) {
 			String consulta = rol.obtenerRoles(request, formatoFecha).getDatos().get(AppConstantes.QUERY).toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 	}
@@ -106,8 +106,8 @@ public class RolServiceImpl implements RolService {
 		Rol rol = new Rol();
 		try {
 			List<RolResponse> rolResponses;
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),
-					this.getClass().getPackage().toString(), "catalogoRol", CONSULTA, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),
+			//		this.getClass().getPackage().toString(), "catalogoRol", CONSULTA, authentication);
 			response = providerRestTemplate.consumirServicio(rol.catalogoRol().getDatos(), urlConsulta, authentication);
 			if (response.getCodigo() == 200) {
 				rolResponses = Arrays.asList(modelMapper.map(response.getDatos(), RolResponse[].class));
@@ -118,9 +118,9 @@ public class RolServiceImpl implements RolService {
 			String consulta = rol.catalogoRol().getDatos().get(AppConstantes.QUERY).toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(),
-					this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(),
+			//		this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 	}
@@ -135,8 +135,8 @@ public class RolServiceImpl implements RolService {
 		Rol rol = new Rol(usuarioRequest);
 
 		try {
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),
-					this.getClass().getPackage().toString(), "buscarFiltrosRol", CONSULTA, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),
+			//		this.getClass().getPackage().toString(), "buscarFiltrosRol", CONSULTA, authentication);
 			response = providerRestTemplate.consumirServicio(
 					rol.buscarFiltrosRol(request, rol, formatoFecha).getDatos(), urlConsultaPaginado, authentication);
 			return MensajeResponseUtil.mensajeConsultaResponse(response, SIN_INFORMACION);
@@ -145,9 +145,9 @@ public class RolServiceImpl implements RolService {
 					.toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(),
-					this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(),
+			//		this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 	}
@@ -163,7 +163,7 @@ public class RolServiceImpl implements RolService {
 		Rol rol = new Rol(usuarioRequest);
 
 		try {
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "detalleRol", CONSULTA, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "detalleRol", CONSULTA, authentication);
 			response = providerRestTemplate.consumirServicio(rol.detalleRol(request, rol, formatoFecha).getDatos(),
 					urlConsulta, authentication);
 
@@ -172,9 +172,9 @@ public class RolServiceImpl implements RolService {
 			String consulta = rol.detalleRol(request, rol, formatoFecha).getDatos().get(AppConstantes.QUERY).toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(),
-					this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(),
+			//		this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, CONSULTA,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 	}
@@ -193,15 +193,15 @@ public class RolServiceImpl implements RolService {
 		Rol rol = new Rol(rolRequest);
 		try {
 			rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "agregarRol", ALTA, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "agregarRol", ALTA, authentication);
 			response = providerRestTemplate.consumirServicio(rol.insertar().getDatos(), urlCrear, authentication);
 			return MensajeResponseUtil.mensajeResponse(response, AGREGADO_CORRECTAMENTE);
 		} catch (Exception e) {
 			String consulta = rol.insertar().getDatos().get(AppConstantes.QUERY).toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, ALTA,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, ALTA,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 	}
@@ -221,15 +221,15 @@ public class RolServiceImpl implements RolService {
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
 		rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
 		try {
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "actualizarRol", MODIFICACION, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "actualizarRol", MODIFICACION, authentication);
 			response = providerRestTemplate.consumirServicio(rol.actualizar().getDatos(), urlActualizar, authentication);
 			return MensajeResponseUtil.mensajeResponse(response, MODIFICADO_CORRECTAMENTE);
 		} catch (Exception e) {
 			String consulta = rol.actualizar().getDatos().get(AppConstantes.QUERY).toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, MODIFICACION,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, MODIFICACION,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 	}
@@ -249,7 +249,7 @@ public class RolServiceImpl implements RolService {
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
 
 		try {
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "cambiarEstatusRol", MODIFICACION, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "cambiarEstatusRol", MODIFICACION, authentication);
 			response = providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlActualizar, authentication);
 			if (rol.getEstatusRol() == 1) {
 				return MensajeResponseUtil.mensajeResponse(response, ACTIVADO_CORRECTAMENTE);
@@ -260,8 +260,8 @@ public class RolServiceImpl implements RolService {
 			String consulta = rol.cambiarEstatus().getDatos().get(AppConstantes.QUERY).toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, MODIFICACION,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + decoded, MODIFICACION,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 	}
@@ -276,7 +276,7 @@ public class RolServiceImpl implements RolService {
 		ReporteDto reporteDto = gson.fromJson(datosJson, ReporteDto.class);
 		Map<String, Object> envioDatos = rol.generarReporte(reporteDto, nombrePdfReportes);
 		try {
-			logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "generarDocumento", GENERACION, authentication);
+			// logUtil.crearArchivoLog(Level.INFO.toString(), this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "generarDocumento", GENERACION, authentication);
 			response = providerRestTemplate.consumirServicioReportes(envioDatos, urlReportes, authentication);
 		return MensajeResponseUtil.mensajeConsultaResponse(response,
 				ERROR_AL_DESCARGAR_DOCUMENTO);
@@ -284,8 +284,8 @@ public class RolServiceImpl implements RolService {
 			String consulta = rol.generarReporte(reporteDto, nombrePdfReportes).get("condicion").toString();
 			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
 			log.error("Error al ejecutar el query " + decoded);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + consulta, GENERACION,
-					authentication);
+			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + consulta, GENERACION,
+			//		authentication);
 			throw new IOException("52", e.getCause());
 		}
 
