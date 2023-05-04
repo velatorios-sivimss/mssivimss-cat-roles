@@ -175,14 +175,14 @@ public class Rol {
 		Map<String, Object> envioDatos = new HashMap<>();
 		String condicion = " ";
 		if ( this.idRol != null && this.nivel != null ) {
-			condicion = " AND R.ID_OFICINA = " + this.nivel + " AND R.ID_ROL = " + this.idRol ;
+			condicion = " AND sr.ID_OFICINA = " + this.nivel + " AND sr.ID_ROL = " + this.idRol ;
 		}
 		else if (this.idRol != null ) {
-			condicion =  " AND R.ID_ROL = " + this.idRol ;
+			condicion =  " AND sr.ID_ROL = " + this.idRol ;
 		}else if (this.nivel != null ) {
-			condicion = " AND R.ID_OFICINA = " + this.nivel ;
+			condicion = " AND sr.ID_OFICINA = " + this.nivel ;
 		}
-		condicion = condicion + " ORDER BY R.ID_ROL ASC";
+		condicion = condicion + " ORDER BY sr.ID_ROL ASC";
 		envioDatos.put("condicion", condicion);
 		envioDatos.put("tipoReporte", reporteDto.getTipoReporte());
 		envioDatos.put("rutaNombreReporte", nombrePdfReportes);

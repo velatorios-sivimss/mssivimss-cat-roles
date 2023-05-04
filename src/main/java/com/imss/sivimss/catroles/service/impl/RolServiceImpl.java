@@ -282,8 +282,7 @@ public class RolServiceImpl implements RolService {
 				ERROR_AL_DESCARGAR_DOCUMENTO);
 		} catch (Exception e) {
 			String consulta = rol.generarReporte(reporteDto, nombrePdfReportes).get("condicion").toString();
-			String decoded = new String(DatatypeConverter.parseBase64Binary(consulta));
-			log.error("Error al ejecutar el query " + decoded);
+			log.error("Error al ejecutar el query " + consulta);
 			// logUtil.crearArchivoLog(Level.WARNING.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), "Fallo al ejecutar el query: " + consulta, GENERACION,
 			//		authentication);
 			throw new IOException("52", e.getCause());
