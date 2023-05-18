@@ -89,6 +89,10 @@ public class Rol {
 			query.append(" AND R.ID_ROL = ").append(this.getIdRol());
 		}
 		
+		if (this.getEstatusRol() != null) {
+			query.append(" AND R.IND_ACTIVO = ").append(this.getEstatusRol());
+		}
+		
 		query.append(" ORDER BY R.ID_ROL ASC");
 		
 		String encoded = DatatypeConverter.printBase64Binary(query.toString().getBytes());
