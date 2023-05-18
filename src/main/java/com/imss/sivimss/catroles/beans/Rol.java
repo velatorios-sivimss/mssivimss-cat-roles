@@ -54,6 +54,7 @@ public class Rol {
 	public Rol(UsuarioRequest usuarioRequest) {
 		this.nivel= usuarioRequest.getIdOficina();
 		this.idRol = usuarioRequest.getIdRol();
+		this.estatusRol = usuarioRequest.getEstatusRol();
 	}
 	
 	public DatosRequest obtenerRoles(DatosRequest request, String formatoFecha) {
