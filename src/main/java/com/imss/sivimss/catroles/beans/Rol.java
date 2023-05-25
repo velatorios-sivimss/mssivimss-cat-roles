@@ -54,6 +54,7 @@ public class Rol {
 	public Rol(UsuarioRequest usuarioRequest) {
 		this.nivel= usuarioRequest.getIdOficina();
 		this.idRol = usuarioRequest.getIdRol();
+		this.estatusRol = usuarioRequest.getEstatusRol();
 	}
 	
 	public DatosRequest obtenerRoles(DatosRequest request, String formatoFecha) {
@@ -87,6 +88,10 @@ public class Rol {
 		}
 		if (this.getIdRol() != null) {
 			query.append(" AND R.ID_ROL = ").append(this.getIdRol());
+		}
+		
+		if (this.getEstatusRol() != null) {
+			query.append(" AND R.IND_ACTIVO = ").append(this.getEstatusRol());
 		}
 		
 		query.append(" ORDER BY R.ID_ROL ASC");
@@ -175,14 +180,14 @@ public class Rol {
 		Map<String, Object> envioDatos = new HashMap<>();
 		String condicion = " ";
 		if ( this.idRol != null && this.nivel != null ) {
-			condicion = " AND R.ID_OFICINA = " + this.nivel + " AND R.ID_ROL = " + this.idRol ;
+			condicion = " AND sr.ID_OFICINA = " + this.nivel + " AND sr.ID_ROL = " + this.idRol ;
 		}
 		else if (this.idRol != null ) {
-			condicion =  " AND R.ID_ROL = " + this.idRol ;
+			condicion =  " AND sr.ID_ROL = " + this.idRol ;
 		}else if (this.nivel != null ) {
-			condicion = " AND R.ID_OFICINA = " + this.nivel ;
+			condicion = " AND sr.ID_OFICINA = " + this.nivel ;
 		}
-		condicion = condicion + " ORDER BY R.ID_ROL ASC";
+		condicion = condicion + " ORDER BY sr.ID_ROL ASC";
 		envioDatos.put("condicion", condicion);
 		envioDatos.put("tipoReporte", reporteDto.getTipoReporte());
 		envioDatos.put("rutaNombreReporte", nombrePdfReportes);
