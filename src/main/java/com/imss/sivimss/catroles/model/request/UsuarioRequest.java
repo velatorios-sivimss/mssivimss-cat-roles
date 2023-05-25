@@ -28,5 +28,4 @@ public class UsuarioRequest {
 	private Integer idVelatorio;
 	private Integer idRol;
 	private Integer idDelegacion;
-	private Integer estatusRol;
 }

@@ -38,13 +38,8 @@ public class WebSecurity {
 	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		// paths publicos
 		http.csrf().disable().authorizeRequests().antMatchers("/actuator/**").permitAll().anyRequest().authenticated().and().exceptionHandling()
-				.authenticationEntryPoint(authenticationEntryPoint());
-
-/* 		http.csrf().disable().authorizeRequests().anyRequest().authenticated().and().exceptionHandling()
-				.authenticationEntryPoint(authenticationEntryPoint()); */
-		// ==añadir filtro a la configuracion de spring security
+		.authenticationEntryPoint(authenticationEntryPoint());
 		http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class).sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
