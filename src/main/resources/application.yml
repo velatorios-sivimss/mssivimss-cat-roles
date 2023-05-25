@@ -34,10 +34,14 @@ endpoints:
    dominio-consulta-paginado: ${msit_GENERICO_PAGINADO}
    dominio-crear: ${msit_GENERICO_CREAR}
    dominio-actualizar: ${msit_GENERICO_ACTUALIZAR}
+   mod-catalogos: ${msit_CATALOGOS}
+
+plantilla:
+   pdf-reporteGestionRol: ${msit_REPORTE_GESTION_ROL} 
+  
+url_reportes:
    ms-reportes: ${msit_REPORTES}
 
-reportes:
-   pdf-reporteGestionRol: reportes/generales/ReporteGestionRol.jrxml
 
 jwt:
   secretkey-flujo: ${msit_SECRET_KEY}

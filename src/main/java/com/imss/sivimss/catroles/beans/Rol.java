@@ -12,6 +12,8 @@ import com.imss.sivimss.catroles.util.DatosRequest;
 import com.imss.sivimss.catroles.util.QueryHelper;
 import com.imss.sivimss.catroles.model.request.ReporteDto;
 
+import java.nio.charset.StandardCharsets;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,7 +56,6 @@ public class Rol {
 	public Rol(UsuarioRequest usuarioRequest) {
 		this.nivel= usuarioRequest.getIdOficina();
 		this.idRol = usuarioRequest.getIdRol();
-		this.estatusRol = usuarioRequest.getEstatusRol();
 	}
 	
 	public DatosRequest obtenerRoles(DatosRequest request, String formatoFecha) {
@@ -62,8 +63,7 @@ public class Rol {
 				+ " NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, date_format(R.FEC_ALTA,'" + formatoFecha+ "') AS fCreacion,"
 				+ " R.IND_ACTIVO AS estatus FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA "
 				+ " ORDER BY ID_ROL ASC";
-		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
-		request.getDatos().put(AppConstantes.QUERY, encoded);
+		request.getDatos().put(AppConstantes.QUERY, queryEncoded(query));
 
 		return request;
 	}
@@ -72,8 +72,7 @@ public class Rol {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
 		String query = "SELECT * FROM SVC_ROL R  ORDER BY ID_ROL ASC";
-		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
-		parametro.put(AppConstantes.QUERY, encoded);
+		parametro.put(AppConstantes.QUERY, queryEncoded(query));
 		request.setDatos(parametro);
 		return request;
 	}
@@ -90,14 +89,9 @@ public class Rol {
 			query.append(" AND R.ID_ROL = ").append(this.getIdRol());
 		}
 		
-		if (this.getEstatusRol() != null) {
-			query.append(" AND R.IND_ACTIVO = ").append(this.getEstatusRol());
-		}
-		
 		query.append(" ORDER BY R.ID_ROL ASC");
 		
-		String encoded = DatatypeConverter.printBase64Binary(query.toString().getBytes());
-		request.getDatos().put(AppConstantes.QUERY, encoded);
+		request.getDatos().put(AppConstantes.QUERY, queryEncoded(query.toString()));
 		return request;
 	}
 	
@@ -108,16 +102,16 @@ public class Rol {
 				+ "NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, R.IND_ACTIVO AS estatusRol,\r\n"
 				+ "date_format(R.FEC_ALTA, '"+ formatoFecha+ "') AS fCreacion FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA WHERE ID_ROL = " 
 				+ rol.getIdRol() + " ORDER BY ID_ROL DESC";
-		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
+
 		request.getDatos().remove("id");
-		request.getDatos().put(AppConstantes.QUERY, encoded);
+		request.getDatos().put(AppConstantes.QUERY, queryEncoded(query));
 		return request;
 	}
 
 	public DatosRequest insertar() {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
-
+		this.desRol = limpiaCaracteresDesRol(this.desRol);
 		final QueryHelper q = new QueryHelper("INSERT INTO SVC_ROL");
 		q.agregarParametroValues(DES_ROL, "'" + this.desRol + "'");
 		q.agregarParametroValues(CVE_ESTATUS, "1");
@@ -130,8 +124,7 @@ public class Rol {
 		q.agregarParametroValues("ID_OFICINA", "" + this.nivel + "");
 		
 		String query = q.obtenerQueryInsertar();
-		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
-		parametro.put(AppConstantes.QUERY, encoded);
+		parametro.put(AppConstantes.QUERY, queryEncoded(query));
 		
 		request.setDatos(parametro);
 		
@@ -151,8 +144,7 @@ public class Rol {
 		q.addWhere(ID_ROL + this.idRol);
 		
 		String query = q.obtenerQueryActualizar();
-		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
-		parametro.put(AppConstantes.QUERY, encoded);
+		parametro.put(AppConstantes.QUERY, queryEncoded(query));
 		request.setDatos(parametro);
 		
 		return request;
@@ -169,8 +161,7 @@ public class Rol {
 		q.addWhere(ID_ROL + this.idRol);
 		
 		String query = q.obtenerQueryActualizar();
-		String encoded = DatatypeConverter.printBase64Binary(query.getBytes());
-		parametro.put(AppConstantes.QUERY, encoded);
+		parametro.put(AppConstantes.QUERY, queryEncoded(query));
 		request.setDatos(parametro);
 		
 		return request;
@@ -193,5 +184,13 @@ public class Rol {
 		envioDatos.put("rutaNombreReporte", nombrePdfReportes);
 
 		return envioDatos;
+	}
+	
+	private String limpiaCaracteresDesRol(String str) {
+		str = str.replace("'", "\"");
+		return str;
+	}
+	private String queryEncoded (String str) {
+		return DatatypeConverter.printBase64Binary(str.getBytes(StandardCharsets.UTF_8));
 	}
 }

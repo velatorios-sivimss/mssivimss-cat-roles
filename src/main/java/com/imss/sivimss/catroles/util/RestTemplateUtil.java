@@ -36,18 +36,18 @@ public class RestTemplateUtil {
 	 * @param clazz
 	 * @return
 	 */
-	public Response<?> sendPostRequestByteArray(String url, EnviarDatosRequest body, Class<?> clazz)
+	public Response<Object> sendPostRequestByteArray(String url, EnviarDatosRequest body, Class<?> clazz)
 			throws IOException {
-		Response<?> responseBody = new Response<>();
+		Response<Object> responseBody = new Response<>();
 		HttpHeaders headers = RestTemplateUtil.createHttpHeaders();
 
 		HttpEntity<Object> request = new HttpEntity<>(body, headers);
-		ResponseEntity<?> responseEntity = null;
+		ResponseEntity<Object> responseEntity = null;
 		try {
-			responseEntity = restTemplate.postForEntity(url, request, clazz);
+			responseEntity = (ResponseEntity<Object>) restTemplate.postForEntity(url, request, clazz);
 			if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
 				// noinspection unchecked
-				responseBody = (Response<List<String>>) responseEntity.getBody();
+				responseBody = (Response<Object>) responseEntity.getBody();
 			} else {
 				throw new IOException("Ha ocurrido un error al enviar");
 			}
@@ -70,17 +70,17 @@ public class RestTemplateUtil {
 	 * @param clazz
 	 * @return
 	 */
-	public Response<?> sendPostRequestByteArrayToken(String url, EnviarDatosRequest body, String subject,
+	public Response<Object> sendPostRequestByteArrayToken(String url, EnviarDatosRequest body, String subject,
 			Class<?> clazz) throws IOException {
-		Response<?> responseBody = new Response<>();
+		Response<Object> responseBody = new Response<>();
 		HttpHeaders headers = RestTemplateUtil.createHttpHeadersToken(subject);
 
 		HttpEntity<Object> request = new HttpEntity<>(body, headers);
-		ResponseEntity<?> responseEntity = null;
+		ResponseEntity<Object> responseEntity = null;
 
-		responseEntity = restTemplate.postForEntity(url, request, clazz);
+		responseEntity = (ResponseEntity<Object>) restTemplate.postForEntity(url, request, clazz);
 
-		responseBody = (Response<List<String>>) responseEntity.getBody();
+		responseBody = (Response<Object>) responseEntity.getBody();
 
 		return responseBody;
 	}
@@ -127,12 +127,12 @@ public class RestTemplateUtil {
 	 * @param clazz
 	 * @return
 	 */
-	public Response<?> sendPostRequestByteArrayArchviosToken(String url, EnviarDatosArchivosRequest body,
+	public Response<Object> sendPostRequestByteArrayArchviosToken(String url, EnviarDatosArchivosRequest body,
 			String subject, Class<?> clazz) throws IOException {
-		Response<?> responseBody = new Response<>();
+		Response<Object> responseBody = new Response<>();
 		HttpHeaders headers = RestTemplateUtil.createHttpHeadersArchivosToken(subject);
 
-		ResponseEntity<?> responseEntity = null;
+		ResponseEntity<Object> responseEntity = null;
 		try {
 
 			LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
@@ -147,10 +147,10 @@ public class RestTemplateUtil {
 			parts.add("datos", body.getDatos());
 			HttpEntity<LinkedMultiValueMap<String, Object>> request = new HttpEntity<>(parts, headers);
 
-			responseEntity = restTemplate.postForEntity(url, request, clazz);
+			responseEntity = (ResponseEntity<Object>) restTemplate.postForEntity(url, request, clazz);
 			if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
 				// noinspection unchecked
-				responseBody = (Response<List<String>>) responseEntity.getBody();
+				responseBody = (Response<Object>) responseEntity.getBody();
 			} else {
 				throw new IOException("Ha ocurrido un error al enviar");
 			}
@@ -183,15 +183,15 @@ public class RestTemplateUtil {
 	 * @param clazz
 	 * @return
 	 */
-	public Response<?> sendPostRequestByteArrayReportesToken(String url, DatosReporteDTO body, String subject,
+	public Response<Object> sendPostRequestByteArrayReportesToken(String url, DatosReporteDTO body, String subject,
 			Class<?> clazz) throws IOException {
-		Response<?> responseBody = new Response<>();
+		Response<Object> responseBody = new Response<>();
 		HttpHeaders headers = RestTemplateUtil.createHttpHeadersToken(subject);
 
 		HttpEntity<Object> request = new HttpEntity<>(body, headers);
-		ResponseEntity<?> responseEntity = null;
-		responseEntity = restTemplate.postForEntity(url, request, clazz);
-		responseBody = (Response<List<String>>) responseEntity.getBody();
+		ResponseEntity<Object> responseEntity = null;
+		responseEntity = (ResponseEntity<Object>) restTemplate.postForEntity(url, request, clazz);
+		responseBody = (Response<Object>) responseEntity.getBody();
 
 		return responseBody;
 	}
