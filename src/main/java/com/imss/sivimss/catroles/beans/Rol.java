@@ -52,6 +52,7 @@ public class Rol {
 		this.desRol = rolRequest.getDesRol();
 		this.estatusRol = rolRequest.getEstatusRol();
 		this.nivel= rolRequest.getNivel();
+		this.claveAlta = rolRequest.getClaveAlta();
 	}
 	public Rol(UsuarioRequest usuarioRequest) {
 		this.nivel= usuarioRequest.getIdOficina();
