@@ -18,6 +18,6 @@ public class RolRequest {
 	private String desRol;
 	private Integer estatusRol;
 	private Integer nivel;
-	private String claveAlta;
+	private Integer idUsuario;
 	
 }

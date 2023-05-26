@@ -31,7 +31,7 @@ public class Rol {
 	private String desRol;
 	private Integer estatusRol;
 	private Integer nivel;
-	private String claveAlta;
+	private Integer idUsuario;
 	private String claveModifica;
 	private String claveBaja;
 	
@@ -52,7 +52,7 @@ public class Rol {
 		this.desRol = rolRequest.getDesRol();
 		this.estatusRol = rolRequest.getEstatusRol();
 		this.nivel= rolRequest.getNivel();
-		this.claveAlta = rolRequest.getClaveAlta();
+		this.idUsuario = rolRequest.getIdUsuario();
 	}
 	public Rol(UsuarioRequest usuarioRequest) {
 		this.nivel= usuarioRequest.getIdOficina();
@@ -63,7 +63,7 @@ public class Rol {
 	public DatosRequest obtenerRoles(DatosRequest request, String formatoFecha) {
 		String query = "SELECT R.ID_ROL AS idRol, R.DES_ROL AS desRol,"
 				+ " NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, date_format(R.FEC_ALTA,'" + formatoFecha+ "') AS fCreacion,"
-				+ " R.IND_ACTIVO AS estatus FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA "
+				+ " R.IND_ACTIVO AS estatusRol FROM SVC_ROL AS R INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA "
 				+ " ORDER BY ID_ROL ASC";
 		request.getDatos().put(AppConstantes.QUERY, queryEncoded(query));
 
@@ -73,7 +73,7 @@ public class Rol {
 	public DatosRequest catalogoRol() {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
-		String query = "SELECT * FROM SVC_ROL R  ORDER BY ID_ROL ASC";
+		String query = "SELECT r.ID_ROL AS id, r.DES_ROL AS des_rol FROM SVC_ROL R  ORDER BY ID_ROL ASC";
 		parametro.put(AppConstantes.QUERY, queryEncoded(query));
 		request.setDatos(parametro);
 		return request;
@@ -121,7 +121,7 @@ public class Rol {
 		q.agregarParametroValues(DES_ROL, "'" + this.desRol + "'");
 		q.agregarParametroValues(CVE_ESTATUS, "1");
 		q.agregarParametroValues("FEC_ALTA", CURRENT_TIMESTAMP);
-		q.agregarParametroValues("ID_USUARIO_ALTA", "'" + this.claveAlta + "'");
+		q.agregarParametroValues("ID_USUARIO_ALTA", "'" + this.idUsuario + "'");
 		q.agregarParametroValues(FEC_ACTUALIZACION, NULL );
 		q.agregarParametroValues(ID_USUARIO_MODIFICA, NULL);
 		q.agregarParametroValues(ID_USUARIO_BAJA, NULL);

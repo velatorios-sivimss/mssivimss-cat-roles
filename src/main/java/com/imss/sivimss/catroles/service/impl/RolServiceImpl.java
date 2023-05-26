@@ -189,10 +189,10 @@ public class RolServiceImpl implements RolService {
 
 		rolRequest = gson.fromJson(datosJson, RolRequest.class);
 		Rol rol = new Rol(rolRequest);
+		rol.setIdUsuario(usuarioDto.getIdUsuario());
 		Map<String, Object> envioDatos = rol.insertar().getDatos();
 		try {
 			log.error(CU04_NAME + queryDecoded(envioDatos));
-			rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "agregarRol", ALTA, authentication);
 			response = providerRestTemplate.consumirServicio(envioDatos, urlModCatalogos + CREAR, authentication);
 			return MensajeResponseUtil.mensajeResponse(response, AGREGADO_CORRECTAMENTE);
@@ -217,7 +217,6 @@ public class RolServiceImpl implements RolService {
 		}
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
-		rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
 		Map<String, Object> envioDatos = rol.actualizar().getDatos();
 		try {
 			log.error(CU04_NAME + queryDecoded(envioDatos));
