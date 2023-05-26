@@ -73,7 +73,7 @@ public class Rol {
 	public DatosRequest catalogoRol() {
 		DatosRequest request = new DatosRequest();
 		Map<String, Object> parametro = new HashMap<>();
-		String query = "SELECT r.ID_ROL AS id, r.DES_ROL AS des_rol FROM SVC_ROL R  ORDER BY ID_ROL ASC";
+		String query = "SELECT r.ID_ROL AS id_rol, r.DES_ROL AS des_rol FROM SVC_ROL r  ORDER BY r.ID_ROL ASC";
 		parametro.put(AppConstantes.QUERY, queryEncoded(query));
 		request.setDatos(parametro);
 		return request;
