@@ -45,8 +45,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?> consultaLista(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		Response<?> response =   rolService.consultarRoles(request,authentication);
+	public CompletableFuture<Object> consultaLista(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		Response<Object> response =   rolService.consultarRoles(request,authentication);
 		
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
@@ -55,8 +55,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?> catalogo(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		Response<?> response =   rolService.catalogoRol(request,authentication);
+	public CompletableFuture<Object> catalogo(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		Response<Object> response =   rolService.catalogoRol(request,authentication);
 		
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
@@ -65,8 +65,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?> buscar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		Response<?> response =   rolService.buscarFiltrosRol(request,authentication);
+	public CompletableFuture<Object> buscar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		Response<Object> response =   rolService.buscarFiltrosRol(request,authentication);
 		
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
@@ -75,8 +75,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?> detalle(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		Response<?> response =  rolService.detalleRol(request,authentication);
+	public CompletableFuture<Object> detalle(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		Response<Object> response =  rolService.detalleRol(request,authentication);
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	
@@ -84,8 +84,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?> agregar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		Response<?> response =  rolService.agregarRol(request,authentication);
+	public CompletableFuture<Object> agregar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		Response<Object> response =  rolService.agregarRol(request,authentication);
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	
@@ -93,8 +93,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?> actualizar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
-		Response<?> response =  rolService.actualizarRol(request,authentication);
+	public CompletableFuture<Object> actualizar(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
+		Response<Object> response =  rolService.actualizarRol(request,authentication);
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	
@@ -102,8 +102,8 @@ public class RolController {
 	@CircuitBreaker(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@Retry(name = "msflujo", fallbackMethod = "fallbackGenerico")
 	@TimeLimiter(name = "msflujo")
-	public CompletableFuture<?>  cambiarEstatusRol(@RequestBody DatosRequest request,Authentication authentication) throws IOException {		
-		Response<?> response = rolService.cambiarEstatusRol(request,authentication);
+	public CompletableFuture<Object>  cambiarEstatusRol(@RequestBody DatosRequest request,Authentication authentication) throws IOException {		
+		Response<Object> response = rolService.cambiarEstatusRol(request,authentication);
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 	@PostMapping("/generarDocumento")
@@ -112,7 +112,7 @@ public class RolController {
 	@TimeLimiter(name = "msflujo")
 	public CompletableFuture<Object>  generarDocumento(@RequestBody DatosRequest request,Authentication authentication) throws IOException {
 	
-		Response<?> response =  rolService.generarDocumento(request,authentication);
+		Response<Object> response =  rolService.generarDocumento(request,authentication);
 		return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));  
 	}
 	/**
@@ -121,27 +121,27 @@ public class RolController {
 	 * @return respuestas
 	 * @throws IOException 
 	 */
-	private CompletableFuture<?> fallbackGenerico(@RequestBody DatosRequest request, Authentication authentication,
+	private CompletableFuture<Object> fallbackGenerico(@RequestBody DatosRequest request, Authentication authentication,
 			CallNotPermittedException e) throws IOException {
-		Response<?> response = providerRestTemplate.respuestaProvider(e.getMessage());
-		// logUtil.crearArchivoLog(Level.INFO.toString(),this.getClass().getSimpleName(),this.getClass().getPackage().toString(),e.getMessage(),CONSULTA + " " + request.getDatos().toString(),authentication);
+		Response<Object> response = providerRestTemplate.respuestaProvider(e.getMessage());
+		 logUtil.crearArchivoLog(Level.INFO.toString(),this.getClass().getSimpleName(),this.getClass().getPackage().toString(),e.getMessage(),CONSULTA + " " + request.getDatos().toString(),authentication);
 		return CompletableFuture
 				.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 
-	private CompletableFuture<?> fallbackGenerico(@RequestBody DatosRequest request, Authentication authentication,
+	private CompletableFuture<Object> fallbackGenerico(@RequestBody DatosRequest request, Authentication authentication,
 			RuntimeException e)  throws IOException  {
-		Response<?> response = providerRestTemplate.respuestaProvider(e.getMessage());
-		// logUtil.crearArchivoLog(Level.INFO.toString(),this.getClass().getSimpleName(),this.getClass().getPackage().toString(),e.getMessage(),CONSULTA+" "+request.getDatos().toString(),authentication);
+		Response<Object> response = providerRestTemplate.respuestaProvider(e.getMessage());
+		 logUtil.crearArchivoLog(Level.INFO.toString(),this.getClass().getSimpleName(),this.getClass().getPackage().toString(),e.getMessage(),CONSULTA+" "+request.getDatos().toString(),authentication);
 		
 		return CompletableFuture
 				.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));
 	}
 
-	private CompletableFuture<?> fallbackGenerico(@RequestBody DatosRequest request, Authentication authentication,
+	private CompletableFuture<Object> fallbackGenerico(@RequestBody DatosRequest request, Authentication authentication,
 			NumberFormatException e)  throws IOException  {
-		Response<?> response = providerRestTemplate.respuestaProvider(e.getMessage());
-		// logUtil.crearArchivoLog(Level.INFO.toString(),this.getClass().getSimpleName(),this.getClass().getPackage().toString(),e.getMessage(),CONSULTA + " " + request.getDatos().toString(),authentication);
+		Response<Object> response = providerRestTemplate.respuestaProvider(e.getMessage());
+		 logUtil.crearArchivoLog(Level.INFO.toString(),this.getClass().getSimpleName(),this.getClass().getPackage().toString(),e.getMessage(),CONSULTA + " " + request.getDatos().toString(),authentication);
 		
 		return CompletableFuture
 				.supplyAsync(() -> new ResponseEntity<>(response, HttpStatus.valueOf(response.getCodigo())));

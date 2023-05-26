@@ -56,6 +56,7 @@ public class Rol {
 	public Rol(UsuarioRequest usuarioRequest) {
 		this.nivel= usuarioRequest.getIdOficina();
 		this.idRol = usuarioRequest.getIdRol();
+		this.estatusRol = usuarioRequest.getEstatusRol();
 	}
 	
 	public DatosRequest obtenerRoles(DatosRequest request, String formatoFecha) {
@@ -77,16 +78,19 @@ public class Rol {
 		return request;
 	}
 
-	public DatosRequest buscarFiltrosRol(DatosRequest request, Rol rol, String formatoFecha) {
+	public DatosRequest buscarFiltrosRol(DatosRequest request, String formatoFecha) {
 		StringBuilder query = new StringBuilder(" SELECT  ID_ROL as idRol, DES_ROL as desRol, NO.ID_OFICINA AS nivelOficina, NO.DES_NIVELOFICINA AS desNivelOficina, "
 				+ " R.IND_ACTIVO AS estatusRol, date_format(R.FEC_ALTA,'"+ formatoFecha+ "') AS fCreacion FROM SVC_ROL AS R "
 				+ " INNER JOIN SVC_NIVEL_OFICINA NO  ON R.ID_OFICINA = NO.ID_OFICINA ");
 		query.append(" WHERE IFNULL(ID_ROL,0) > 0" );
-		if (rol.getNivel() != null) {
+		if (this.getNivel() != null) {
 			query.append(" AND R.ID_OFICINA = ").append(this.getNivel());
 		}
 		if (this.getIdRol() != null) {
 			query.append(" AND R.ID_ROL = ").append(this.getIdRol());
+		}
+		if (this.getEstatusRol() != null) {
+			query.append(" AND R.IND_ACTIVO = ").append(this.getEstatusRol());
 		}
 		
 		query.append(" ORDER BY R.ID_ROL ASC");

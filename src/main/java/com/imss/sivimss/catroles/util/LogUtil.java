@@ -32,13 +32,11 @@ public class LogUtil {
             escribirArchivo.write("" + formatoFechaLog + " --- [" + tipoLog + "] " + origen + " " + clasePath + " : " + mensaje + " , Usuario: " + usuarioDto.getCveUsuario() + " - " + tiempoEjecucion);
             escribirArchivo.write("\r\n");
             escribirArchivo.close();
-            escribirArchivo.close();
         } catch (Exception e) {
+            escribirArchivo.close();
             log.error("No se puede escribir el log.");
             log.error(e.getMessage());
-        } finally {
-            escribirArchivo.close();
-        }
+        } 
 
     }
 
