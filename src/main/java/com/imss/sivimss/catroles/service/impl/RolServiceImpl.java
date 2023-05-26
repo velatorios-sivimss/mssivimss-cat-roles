@@ -189,10 +189,10 @@ public class RolServiceImpl implements RolService {
 
 		rolRequest = gson.fromJson(datosJson, RolRequest.class);
 		Rol rol = new Rol(rolRequest);
+		rol.setIdUsuario(usuarioDto.getIdUsuario());
 		Map<String, Object> envioDatos = rol.insertar().getDatos();
 		try {
 			log.error(CU04_NAME + queryDecoded(envioDatos));
-			rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "agregarRol", ALTA, authentication);
 			response = providerRestTemplate.consumirServicio(envioDatos, urlModCatalogos + CREAR, authentication);
 			return MensajeResponseUtil.mensajeResponse(response, AGREGADO_CORRECTAMENTE);
@@ -217,7 +217,6 @@ public class RolServiceImpl implements RolService {
 		}
 		Rol rol = new Rol(rolRequest);
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
-		rol.setClaveAlta(usuarioDto.getIdUsuario().toString());
 		Map<String, Object> envioDatos = rol.actualizar().getDatos();
 		try {
 			log.error(CU04_NAME + queryDecoded(envioDatos));
@@ -274,15 +273,16 @@ public class RolServiceImpl implements RolService {
 		ReporteDto reporteDto = gson.fromJson(datosJson, ReporteDto.class);
 		Map<String, Object> envioDatos = rol.generarReporte(reporteDto, nombrePdfReportes);
 		try {
-			log.error(CU04_NAME + queryDecoded(envioDatos));
+			String consulta = envioDatos.get("condicion").toString();
+			log.error(CU04_NAME + ERROR_EJECUTAR_QUERY + consulta);
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "generarDocumento", GENERACION, authentication);
 			response = providerRestTemplate.consumirServicioReportes(envioDatos, urlReportes, authentication);
 		return MensajeResponseUtil.mensajeConsultaResponse(response,
 				ERROR_AL_DESCARGAR_DOCUMENTO);
 		} catch (Exception e) {
-			String consulta = rol.generarReporte(reporteDto, nombrePdfReportes).get("condicion").toString();
+			String consulta = envioDatos.get("condicion").toString();
 			log.error( CU04_NAME + ERROR_EJECUTAR_QUERY + consulta);
-			logUtil.crearArchivoLog(Level.WARNING.toString(), CU04_NAME +  this.getClass().getSimpleName(), this.getClass().getPackage().toString(), ERROR_EJECUTAR_QUERY + consulta, GENERACION,
+			logUtil.crearArchivoLog(Level.WARNING.toString(), CU04_NAME +  this.getClass().getSimpleName(), this.getClass().getPackage().toString(), ERROR_EJECUTAR_QUERY + " condicion: " + consulta, GENERACION,
 				authentication);
 			throw new IOException("52", e.getCause());
 		}
