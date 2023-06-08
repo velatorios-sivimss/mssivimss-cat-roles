@@ -35,7 +35,7 @@ plantilla:
    pdf-reporteGestionRol: ${msit_REPORTE_GESTION_ROL} 
   
 url_reportes:
-   ms-reportes: ${msit_REPORTES}
+   ms-reportes: ${msit_REPORTES_GENERALES}
 
 
 jwt:
