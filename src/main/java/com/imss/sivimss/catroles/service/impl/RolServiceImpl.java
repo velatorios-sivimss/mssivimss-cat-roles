@@ -88,7 +88,7 @@ public class RolServiceImpl implements RolService {
 		
 		Map<String, Object> envioDatos = rol.obtenerRoles(request, formatoFecha).getDatos();
 		try {
-			log.error(CU04_NAME + queryDecoded(envioDatos));
+			log.info(CU04_NAME + queryDecoded(envioDatos));
 			 logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME + this.getClass().getSimpleName(),
 					this.getClass().getPackage().toString(), "consultarRoles", CONSULTAR, authentication);
 			response = providerRestTemplate.consumirServicio(envioDatos, urlModCatalogos + CONSULTA_PAGINADO, authentication);
@@ -109,7 +109,7 @@ public class RolServiceImpl implements RolService {
 			List<RolResponse> rolResponses;
 			 logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),
 					this.getClass().getPackage().toString(), "catalogoRol", CONSULTAR, authentication);
-				log.error(CU04_NAME + queryDecoded(envioDatos));
+				log.info(CU04_NAME + queryDecoded(envioDatos));
 			response = providerRestTemplate.consumirServicio(envioDatos, urlModCatalogos + CONSULTA, authentication);
 			if (response.getCodigo() == 200) {
 				rolResponses = Arrays.asList(modelMapper.map(response.getDatos(), RolResponse[].class));
@@ -136,7 +136,7 @@ public class RolServiceImpl implements RolService {
 		Map<String, Object> envioDatos = rol.buscarFiltrosRol(request, formatoFecha).getDatos();
 
 		try {
-			log.error(CU04_NAME + queryDecoded(envioDatos));
+			log.info(CU04_NAME + queryDecoded(envioDatos));
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),
 				this.getClass().getPackage().toString(), "buscarFiltrosRol", CONSULTAR, authentication);
 			response = providerRestTemplate.consumirServicio(envioDatos, urlModCatalogos + CONSULTA_PAGINADO, authentication);
@@ -162,7 +162,7 @@ public class RolServiceImpl implements RolService {
 		Map<String, Object> envioDatos = rol.detalleRol(request, rol, formatoFecha).getDatos();
 
 		try {
-			log.error(CU04_NAME + queryDecoded(envioDatos));
+			log.info(CU04_NAME + queryDecoded(envioDatos));
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "detalleRol", CONSULTA, authentication);
 			response = providerRestTemplate.consumirServicio(envioDatos,
 					urlModCatalogos + CONSULTA, authentication);
@@ -192,7 +192,7 @@ public class RolServiceImpl implements RolService {
 		rol.setIdUsuario(usuarioDto.getIdUsuario());
 		Map<String, Object> envioDatos = rol.insertar().getDatos();
 		try {
-			log.error(CU04_NAME + queryDecoded(envioDatos));
+			log.info(CU04_NAME + queryDecoded(envioDatos));
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "agregarRol", ALTA, authentication);
 			response = providerRestTemplate.consumirServicio(envioDatos, urlModCatalogos + CREAR, authentication);
 			return MensajeResponseUtil.mensajeResponse(response, AGREGADO_CORRECTAMENTE);
@@ -219,7 +219,7 @@ public class RolServiceImpl implements RolService {
 		rol.setClaveModifica(usuarioDto.getIdUsuario().toString());
 		Map<String, Object> envioDatos = rol.actualizar().getDatos();
 		try {
-			log.error(CU04_NAME + queryDecoded(envioDatos));
+			log.info(CU04_NAME + queryDecoded(envioDatos));
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "actualizarRol", MODIFICACION, authentication);
 			response = providerRestTemplate.consumirServicio(envioDatos, urlModCatalogos + ACTUALIZAR, authentication);
 			return MensajeResponseUtil.mensajeResponse(response, MODIFICADO_CORRECTAMENTE);
@@ -247,7 +247,7 @@ public class RolServiceImpl implements RolService {
 		Map<String, Object> envioDatos = rol.cambiarEstatus().getDatos();
 
 		try {
-			log.error(CU04_NAME + queryDecoded(envioDatos));
+			log.info(CU04_NAME + queryDecoded(envioDatos));
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "cambiarEstatusRol", MODIFICACION, authentication);
 			response = providerRestTemplate.consumirServicio(rol.cambiarEstatus().getDatos(), urlModCatalogos + ACTUALIZAR, authentication);
 			if (rol.getEstatusRol() == 1) {
@@ -274,7 +274,7 @@ public class RolServiceImpl implements RolService {
 		Map<String, Object> envioDatos = rol.generarReporte(reporteDto, nombrePdfReportes);
 		try {
 			String consulta = envioDatos.get("condicion").toString();
-			log.error(CU04_NAME + ERROR_EJECUTAR_QUERY + consulta);
+			log.info(CU04_NAME + consulta);
 			logUtil.crearArchivoLog(Level.INFO.toString(), CU04_NAME +  this.getClass().getSimpleName(),	this.getClass().getPackage().toString(), "generarDocumento", GENERACION, authentication);
 			response = providerRestTemplate.consumirServicioReportes(envioDatos, urlReportes, authentication);
 		return MensajeResponseUtil.mensajeConsultaResponse(response,
